@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { reqWithUserData } from '../../types';
 
 const catchAsyncErrors =
   (func: funcParams) => (req: Request, res: Response, next: NextFunction) => {
@@ -7,4 +8,8 @@ const catchAsyncErrors =
 
 export default catchAsyncErrors;
 
-type funcParams = (req: Request, res: Response, next: NextFunction) => any;
+type funcParams = (
+  req: reqWithUserData,
+  res: Response,
+  next: NextFunction
+) => any;

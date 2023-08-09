@@ -1,0 +1,167 @@
+import { FormEvent, useState } from 'react';
+import { useFeatureContext } from '../context/Feature/FeatureContext';
+import { Alert } from '.';
+import axios from 'axios';
+import { baseUrl } from '../assets/constants';
+
+const AuthModel = ({ type, setType }: AuthenticationProps) => {
+  const {
+    state: { showAlert },
+    displayAlert,
+  } = useFeatureContext();
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [password_confirmation, setPassword_confirmation] = useState('');
+
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (type === 'register') {
+      if (!name || !password || !email || !password_confirmation) {
+        displayAlert('Please provide all the required fields', false);
+      } else if (password !== password_confirmation) {
+        displayAlert('Password does not match!', false);
+      } else {
+        await axios
+          .post(`${baseUrl}/auth/register`, {
+            name: name,
+            email: email,
+            password: password,
+          })
+          .then((response) => {
+            console.log(response.data);
+
+            displayAlert('Success! Register', true);
+          })
+          .catch((err) => {
+            displayAlert('Error', false);
+            console.log(err);
+          });
+      }
+    } else {
+      if (!password || !email) {
+        console.log('ok');
+        displayAlert('Please provide all the required fields', false);
+      } else {
+        await axios
+          .post(`${baseUrl}/auth/login`, {
+            email: email,
+            password: password,
+          })
+          .then((response) => {
+            console.log(response.data);
+            displayAlert('Success! Login', true);
+          })
+          .catch((err) => {
+            displayAlert('Error', false);
+            console.log(err);
+          });
+      }
+    }
+  };
+
+  return (
+    <>
+      {showAlert && <Alert />}
+      <div className=' flex justify-center items-center px-4'>
+        <div className=' flex justify-center items-center flex-col '>
+          <h1 className=' text-[28px] leading-[42px] text-teal-400 font-semibold'>
+            {type === 'register'
+              ? 'Create an account.'
+              : 'Login to your account'}
+          </h1>
+
+          <div className=' mb-[24px]'></div>
+
+          <form onSubmit={onSubmit} className=' flex flex-col gap-4 w-full'>
+            {type === 'register' ? (
+              <div className=' flex flex-col gap-[6px]'>
+                <label htmlFor='name'>
+                  Name <span className=' text-red-400'>*</span>
+                </label>
+                <input
+                  autoComplete='true'
+                  onChange={(e) => setName(e.target.value)}
+                  name='name'
+                  type='text'
+                  maxLength={40}
+                  className=' h-[48px] w-full px-4 py-[12px] bg-slate-300 focus:outline-none text-[16px] leading-[24px] text-black'
+                />
+              </div>
+            ) : (
+              ''
+            )}
+            <div className=' flex flex-col gap-[6px]'>
+              <label htmlFor='email'>
+                Email <span className=' text-red-400'>*</span>
+              </label>
+              <input
+                autoComplete='true'
+                onChange={(e) => setEmail(e.target.value)}
+                name='email'
+                type='text'
+                maxLength={40}
+                className=' h-[48px] px-4 py-[12px] bg-slate-300  focus:outline-none text-[16px] leading-[24px] text-black'
+              />
+            </div>
+            <div className=' flex flex-col gap-[6px]'>
+              <label htmlFor='password'>
+                Password <span className=' text-red-400'>*</span>
+              </label>
+              <input
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete='true'
+                name='password'
+                type='password'
+                maxLength={40}
+                className=' h-[48px] px-4 py-[12px] bg-slate-300 focus:outline-none text-[16px] leading-[24px] text-black'
+              />
+            </div>
+            {type === 'register' ? (
+              <div className=' flex flex-col gap-[6px]'>
+                <label htmlFor='password_confirmation'>
+                  Password <span className=' text-red-400'>*</span>
+                </label>
+                <input
+                  onChange={(e) => setPassword_confirmation(e.target.value)}
+                  autoComplete='true'
+                  name='password_confirmation'
+                  type='password'
+                  maxLength={40}
+                  className=' h-[48px] px-4 py-[12px] bg-slate-300 focus:outline-none text-[16px] leading-[24px] text-black'
+                />
+              </div>
+            ) : (
+              ''
+            )}
+            <button className=' flex justify-center items-center py-3 leading-6 mt-[16px]'>
+              {type === 'register' ? 'Sign up' : 'Sign In'}
+            </button>
+            <p className='text-slate-400 leading-[24px] mb-9'>
+              {type === 'register' ? (
+                <span onClick={() => setType('login')}>
+                  Already have an account?
+                  <span className='text-blue-400 cursor-pointer'>
+                    {' '}
+                    Login here.
+                  </span>
+                </span>
+              ) : (
+                <span onClick={() => setType('register')}>
+                  Create an account?
+                  <span className=' text-blue-400 cursor-pointer'>
+                    {' '}
+                    SignUp here.
+                  </span>
+                </span>
+              )}
+            </p>
+          </form>
+        </div>
+      </div>
+    </>
+  );
+};
+export default AuthModel;

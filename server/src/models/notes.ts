@@ -4,9 +4,7 @@ interface INotes {
   title: string;
   content: Text;
   createdAt: Date;
-  createdBy: {
-    userId: string;
-  };
+  userId: typeof mongoose.Schema.ObjectId;
 }
 
 const notesSchema = new mongoose.Schema<INotes>({
@@ -22,10 +20,10 @@ const notesSchema = new mongoose.Schema<INotes>({
     type: Date,
     default: new Date(),
   },
-  createdBy: {
+  userId: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
-    required: true,
+    required: [true, 'Your are not authorized'],
   },
 });
 

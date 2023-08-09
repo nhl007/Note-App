@@ -55,7 +55,6 @@ export const logoutUser = catchAsyncErrors(async (req, res, next) => {
 
 export const getUserProfile = catchAsyncErrors(
   async (req: reqWithUserData, res, next) => {
-    console.log(req.user?.id);
     const user = await User.findById(req.user?.id);
     if (!user) {
       return next(new errorHandler('No user profile found !', 404));

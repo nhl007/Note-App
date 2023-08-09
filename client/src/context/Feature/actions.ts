@@ -1,0 +1,6 @@
+export const DISPLAY_ALERT = 'SHOW_ALERT';
+export const CLEAR_ALERT = 'CLEAR_ALERT';
+export const UPDATE_PAGE_NAME = 'UPDATE_PAGE_NAME';
+export const SET_IS_LOADING = 'SET_IS_LOADING';
+export const IS_SUPER_ADMIN = 'IS_SUPER_ADMIN';
+export const SET_SIGNATURE_IMAGE = 'SET_SIGNATURE_IMAGE';
