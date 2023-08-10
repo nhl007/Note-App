@@ -15,8 +15,6 @@ type navProps = {
   setCurrentTab: Dispatch<SetStateAction<string>>;
 };
 
-// ? context //auth // initial state
-
 //? Feature context types
 
 type initialFeatureContextStateType = {
@@ -35,7 +33,28 @@ type featureContextActionsType = {
   };
 };
 
-type PostCardPropsType = {
-  image: string;
-  name: string;
+//?auth context types
+
+type initialAuthContextStateType = {
+  user: {
+    name: string;
+    email: string;
+  } | null;
+  token: string | null;
+};
+
+type authContextActionsType = {
+  type: string;
+  payload?: {
+    name?: string;
+    email?: string;
+    token?: string;
+  };
+};
+
+type NoteMetaData = {
+  _id: string;
+  title: string;
+  content: string;
+  createdAt: Date;
 };

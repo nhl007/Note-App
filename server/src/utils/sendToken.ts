@@ -13,8 +13,7 @@ const sendToken = (
   let cookieOptions: CookieOptions = {
     httpOnly: true,
     maxAge: sevenDay,
-    sameSite: 'none',
-    secure: true,
+    sameSite: 'strict',
   };
 
   if (process.env.NODE_ENV === 'PROD') {
@@ -23,12 +22,6 @@ const sendToken = (
       maxAge: sevenDay,
       sameSite: 'none',
       secure: true,
-    };
-  } else {
-    cookieOptions = {
-      httpOnly: true,
-      maxAge: sevenDay,
-      sameSite: 'strict',
     };
   }
 

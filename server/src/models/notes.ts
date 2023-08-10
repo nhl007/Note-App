@@ -24,6 +24,7 @@ const notesSchema = new mongoose.Schema<INotes>({
     type: mongoose.Schema.ObjectId,
     ref: 'User',
     required: [true, 'Your are not authorized'],
+    select: false,
   },
 });
 

@@ -6,7 +6,9 @@ import { reqWithUserData } from '../../types';
 
 export const getNotes = catchAsyncErrors(
   async (req: reqWithUserData, res: Response, next: NextFunction) => {
-    const notes = await Note.find({ userId: req.user?.id }).limit(10);
+    const notes = await Note.find({ userId: req.user?.id })
+      .limit(10)
+      .sort({ createdAt: 'desc' });
     if (!notes) {
       return next(new errorHandler('No notes found!', 404));
     }

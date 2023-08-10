@@ -1,18 +1,18 @@
 import { createContext, useContext, useReducer } from 'react';
-import { DISPLAY_ALERT, CLEAR_ALERT, SET_IS_LOADING } from './actions';
+import { DISPLAY_ALERT, CLEAR_ALERT, SET_IS_LOADING } from '../actions';
 import reducer from './reducer';
+
+type FeatureContextType = {
+  state: initialFeatureContextStateType;
+  displayAlert: (alertText: string, Success: boolean) => void;
+  setIsLoading: (isLoading: boolean) => void;
+};
 
 const initialState: initialFeatureContextStateType = {
   showAlert: false,
   alertText: '',
   alertSuccess: false,
   isLoading: false,
-};
-
-type FeatureContextType = {
-  state: initialFeatureContextStateType;
-  displayAlert: (alertText: string, Success: boolean) => void;
-  setIsLoading: (isLoading: boolean) => void;
 };
 
 const initialContextValue: FeatureContextType = {

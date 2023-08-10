@@ -1,14 +1,15 @@
 import { FormEvent, useState } from 'react';
 import { useFeatureContext } from '../context/Feature/FeatureContext';
 import { Alert } from '.';
-import axios from 'axios';
-import { baseUrl } from '../assets/constants';
+import { useAuthContext } from '../context/Auth/AuthContext';
 
 const AuthModel = ({ type, setType }: AuthenticationProps) => {
   const {
     state: { showAlert },
     displayAlert,
   } = useFeatureContext();
+
+  const { register, login } = useAuthContext();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -24,40 +25,14 @@ const AuthModel = ({ type, setType }: AuthenticationProps) => {
       } else if (password !== password_confirmation) {
         displayAlert('Password does not match!', false);
       } else {
-        await axios
-          .post(`${baseUrl}/auth/register`, {
-            name: name,
-            email: email,
-            password: password,
-          })
-          .then((response) => {
-            console.log(response.data);
-
-            displayAlert('Success! Register', true);
-          })
-          .catch((err) => {
-            displayAlert('Error', false);
-            console.log(err);
-          });
+        await register(name, email, password);
       }
     } else {
       if (!password || !email) {
         console.log('ok');
         displayAlert('Please provide all the required fields', false);
       } else {
-        await axios
-          .post(`${baseUrl}/auth/login`, {
-            email: email,
-            password: password,
-          })
-          .then((response) => {
-            console.log(response.data);
-            displayAlert('Success! Login', true);
-          })
-          .catch((err) => {
-            displayAlert('Error', false);
-            console.log(err);
-          });
+        await login(email, password);
       }
     }
   };

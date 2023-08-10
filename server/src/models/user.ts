@@ -32,12 +32,12 @@ const userSchema = new mongoose.Schema<IUser>({
   password: {
     type: 'string',
     required: [true, 'Please enter your password'],
-
     minlength: [7, "Password can't be lower than 7 characters!"],
     validate: [
       validator.isAlphanumeric,
       'Make sure to have at least one alphanumeric character!',
     ],
+    select: false,
   },
   created_At: {
     type: Date,

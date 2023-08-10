@@ -1,3 +1,4 @@
+import { useAuthContext } from '../context/Auth/AuthContext';
 import NavButtons from './NavButtons';
 
 type navProps = {
@@ -6,6 +7,10 @@ type navProps = {
 };
 
 const NavBar = ({ screen, setScreen }: navProps) => {
+  const {
+    state: { token },
+    logout,
+  } = useAuthContext();
   const onClickScreen = (name: currentScreen) => {
     if (name === screen) {
       return;
@@ -27,26 +32,23 @@ const NavBar = ({ screen, setScreen }: navProps) => {
           active={screen === 'home' ? true : false}
           onClick={() => onClickScreen('home')}
         />
-        <NavButtons
-          name='Create Note'
-          active={screen === 'create' ? true : false}
-          onClick={() => onClickScreen('create')}
-        />
-        {/* <NavButtons
-          name='Update Notes'
-          active={screen === 'update' ? true : false}
-          onClick={() => onClickScreen('update')}
-        /> */}
-        {/* <NavButtons
-          name='Delete Notes'
-          active={screen === 'delete' ? true : false}
-          onClick={() => onClickScreen('delete')}
-        /> */}
-        <NavButtons
-          name='Login'
-          active={screen === 'login' ? true : false}
-          onClick={() => onClickScreen('login')}
-        />
+        {token ? (
+          <>
+            <NavButtons
+              name='Create Note'
+              active={screen === 'create' ? true : false}
+              onClick={() => onClickScreen('create')}
+            />
+
+            <NavButtons name='Logout' active={false} onClick={logout} />
+          </>
+        ) : (
+          <NavButtons
+            name='Login'
+            active={screen === 'login' ? true : false}
+            onClick={() => onClickScreen('login')}
+          />
+        )}
       </div>
     </nav>
   );

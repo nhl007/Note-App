@@ -1,4 +1,4 @@
-import { DISPLAY_ALERT, CLEAR_ALERT, SET_IS_LOADING } from './actions.ts';
+import { DISPLAY_ALERT, CLEAR_ALERT, SET_IS_LOADING } from '../actions.ts';
 
 const reducer = (
   state: initialFeatureContextStateType,
