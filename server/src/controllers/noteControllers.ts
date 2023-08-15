@@ -43,10 +43,14 @@ export const updateNotes = catchAsyncErrors(async (req, res, next) => {
   if (!id || !title || !content) {
     return next(new errorHandler('No notes found!', 404));
   }
-  const note = await Note.findByIdAndUpdate(id, {
-    title: title,
-    content: content,
-  });
+  const note = await Note.findByIdAndUpdate(
+    id,
+    {
+      title: title,
+      content: content,
+    },
+    { upsert: true }
+  );
   res.json({
     success: true,
     note: note,

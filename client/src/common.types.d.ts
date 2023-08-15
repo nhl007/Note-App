@@ -1,4 +1,4 @@
-type currentScreen = 'home' | 'create' | 'delete' | 'update' | 'login';
+type currentScreen = 'home' | 'create' | 'update' | 'login';
 
 type AuthPropType = 'login' | 'register';
 type AuthenticationProps = {

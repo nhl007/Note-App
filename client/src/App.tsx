@@ -1,22 +1,21 @@
 import { useState } from 'react';
 import DashBoard from './DashBoard';
-import { CreateNote, DeleteNotes, UpdateNotes, NavBar } from './components';
+import { CreateNote, UpdateNotes, NavBar } from './components';
 import Authentication from './Authentication';
 
 function App() {
   const [screen, setScreen] = useState<currentScreen>('home');
+  const [updateId, setUpdateId] = useState('');
   return (
     <div id='app' className=''>
       <NavBar screen={screen} setScreen={setScreen} />
       <div className='flex flex-col'>
         {screen === 'home' ? (
-          <DashBoard />
+          <DashBoard setScreen={setScreen} setUpdateId={setUpdateId} />
         ) : screen === 'create' ? (
           <CreateNote />
-        ) : screen === 'delete' ? (
-          <DeleteNotes />
         ) : screen === 'update' ? (
-          <UpdateNotes />
+          <UpdateNotes id={updateId} />
         ) : (
           <Authentication />
         )}
