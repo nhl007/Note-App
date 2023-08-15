@@ -72,8 +72,10 @@ input[type='color'] {
 }
 
 pre {
-  background-color: rgba(43, 67, 31, 0.778);
-  padding: 4px 16px;
+  background-color: #000000;
+  padding: 3px 24px;
+  margin: 2px 10px;
+  border-radius: 8px;
 }
 
 ul {
