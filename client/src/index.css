@@ -106,4 +106,16 @@ ol {
 .text__editor img {
   width: auto;
   max-height: 300px;
+  margin: 0px auto;
+}
+
+/* ! tests */
+
+.draggable-editable-div {
+  width: 400px;
+  height: 300px;
+  background-color: lightgray;
+  overflow: hidden;
+  position: relative;
+  cursor: move;
 }

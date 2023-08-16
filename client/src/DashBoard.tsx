@@ -118,9 +118,7 @@ const LoadNotes = ({
               </button>
             </div>
             <p>{note.createdAt.toString().slice(0, 10)}</p>
-            <div>
-              <p>{note.content}</p>
-            </div>
+            <div dangerouslySetInnerHTML={{ __html: note.content }} />
           </div>
         ))
       ) : (

@@ -77,6 +77,7 @@ function TextEditor({ setContent }: Props) {
   const setTheContent = () => {
     const html = textArea.current.innerHTML!;
     setContent(html);
+    checkFormatting();
   };
 
   const insertImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,79 +110,80 @@ function TextEditor({ setContent }: Props) {
 
     if (range) {
       const startContainer = range.startContainer;
-      ['b', 'i', 'u', 'ol', 'ul', 'font', 'div', 'pre'].forEach((tag) => {
-        setTagButtons((prev) => ({ ...prev, [tag]: hasParent }));
+      ['b', 'i', 'u', 'ol', 'ul', 'font', 'div', 'pre', 'img'].forEach(
+        (tag) => {
+          setTagButtons((prev) => ({ ...prev, [tag]: hasParent }));
 
-        const { hasParent, element } = closest(startContainer, tag);
-        // console.log(hasParent, tag);
-        if (tag === 'font' && element) {
-          const size = (element as elementWithSize).size;
-          size === '5'
-            ? setFontSize(() => ({
-                m: true,
-                s: false,
-                l: false,
-              }))
-            : size === '7'
-            ? setFontSize(() => ({
-                l: true,
-                m: false,
-                s: false,
-              }))
-            : setFontSize(() => ({
-                s: true,
-                m: false,
-                l: false,
-              }));
+          const { hasParent, element } = closest(startContainer, tag);
+          // console.log(hasParent, tag);
+          if (tag === 'font' && element) {
+            const size = (element as elementWithSize).size;
+            size === '5'
+              ? setFontSize(() => ({
+                  m: true,
+                  s: false,
+                  l: false,
+                }))
+              : size === '7'
+              ? setFontSize(() => ({
+                  l: true,
+                  m: false,
+                  s: false,
+                }))
+              : setFontSize(() => ({
+                  s: true,
+                  m: false,
+                  l: false,
+                }));
+          }
+          if (!hasParent && tag === 'font') {
+            setFontSize((prev) => ({
+              ...prev,
+              s: true,
+              m: false,
+              l: false,
+            }));
+          }
+
+          if (tag === 'div' && element) {
+            const align = element.style.textAlign;
+
+            align === 'right'
+              ? setTextAlign(() => ({
+                  l: false,
+                  c: false,
+                  r: true,
+                }))
+              : align === 'center'
+              ? setTextAlign(() => ({
+                  l: false,
+                  c: true,
+                  r: false,
+                }))
+              : setTextAlign(() => ({
+                  l: true,
+                  c: false,
+                  r: false,
+                }));
+          }
+
+          if (!hasParent && tag === 'div') {
+            setTextAlign(() => ({
+              l: true,
+              c: false,
+              r: false,
+            }));
+          }
+
+          if (tag === 'pre' && element) {
+            setIsPre(true);
+          }
+
+          if (!hasParent && tag === 'pre') {
+            setIsPre(false);
+          }
         }
-
-        if (!hasParent && tag === 'font') {
-          setFontSize((prev) => ({
-            ...prev,
-            s: true,
-            m: false,
-            l: false,
-          }));
-        }
-
-        if (tag === 'div' && element) {
-          const align = element.style.textAlign;
-
-          align === 'right'
-            ? setTextAlign(() => ({
-                l: false,
-                c: false,
-                r: true,
-              }))
-            : align === 'center'
-            ? setTextAlign(() => ({
-                l: false,
-                c: true,
-                r: false,
-              }))
-            : setTextAlign(() => ({
-                l: true,
-                c: false,
-                r: false,
-              }));
-        }
-
-        if (!hasParent && tag === 'div') {
-          setTextAlign(() => ({
-            l: true,
-            c: false,
-            r: false,
-          }));
-        }
-
-        if (tag === 'pre' && element) {
-          setIsPre(true);
-        }
-
-        if (!hasParent && tag === 'pre') {
-          setIsPre(false);
-        }
-      });
+      );
     } else {
       console.log('No range selected.');
     }
@@ -194,56 +196,92 @@ function TextEditor({ setContent }: Props) {
       </label>
       <div className='flex gap-2 justify-center items-center'>
         <button
+          title='Bold'
           className={`${tagButtons.b && 'border-teal-400 hover:border-white'}`}
-          onClick={() => setStyles('bold')}
+          onClick={() => {
+            setTagButtons((prev) => ({ ...prev, b: true }));
+            setStyles('bold');
+          }}
         >
           <AiOutlineBold />
         </button>
         <button
+          title='Underline'
           className={`${tagButtons.u && 'border-teal-400 hover:border-white'}`}
-          onClick={() => setStyles('underline')}
+          onClick={() => {
+            setTagButtons((prev) => ({ ...prev, u: true }));
+            setStyles('underline');
+          }}
         >
           <AiOutlineUnderline />
         </button>
         <button
+          title='Italic'
           className={`${tagButtons.i && 'border-teal-400 hover:border-white'}`}
-          onClick={() => setStyles('italic')}
+          onClick={() => {
+            setTagButtons((prev) => ({ ...prev, i: true }));
+            setStyles('italic');
+          }}
         >
           <AiOutlineItalic />
         </button>
         <button
+          title='Font-Small'
           className={`${fontSize.s && 'border-teal-400 hover:border-white'}`}
-          onClick={() => setStyles('fontSize', '3')}
+          onClick={() => {
+            setFontSize(() => ({ l: false, m: false, s: true }));
+            setStyles('fontSize', '3');
+          }}
         >
           <TbCircleLetterS />
         </button>
         <button
+          title='Font-Medium'
           className={`${fontSize.m && 'border-teal-400 hover:border-white'}`}
-          onClick={() => setStyles('fontSize', '5')}
+          onClick={() => {
+            setFontSize(() => ({ l: false, m: true, s: false }));
+            setStyles('fontSize', '5');
+          }}
         >
           <TbCircleLetterM />
         </button>
         <button
+          title='Font-Large'
           className={`${fontSize.l && 'border-teal-400 hover:border-white'}`}
-          onClick={() => setStyles('fontSize', '7')}
+          onClick={() => {
+            setFontSize(() => ({ l: true, m: false, s: false }));
+            setStyles('fontSize', '7');
+          }}
         >
           <TbCircleLetterL />
         </button>
         <button
+          title='Align-Left'
           className={`${textAlign.l && 'border-teal-400 hover:border-white'}`}
-          onClick={() => setStyles('justifyLeft')}
+          onClick={() => {
+            setTextAlign(() => ({ r: false, c: false, l: true }));
+            setStyles('justifyLeft');
+          }}
         >
           <AiOutlineAlignLeft />
         </button>
         <button
+          title='Align-Center'
           className={`${textAlign.c && 'border-teal-400 hover:border-white'}`}
-          onClick={() => setStyles('justifyCenter')}
+          onClick={() => {
+            setTextAlign(() => ({ r: false, c: true, l: false }));
+            setStyles('justifyCenter');
+          }}
         >
           <AiOutlineAlignCenter />
         </button>
         <button
+          title='Align-Right'
           className={`${textAlign.r && 'border-teal-400 hover:border-white'}`}
-          onClick={() => setStyles('justifyRight')}
+          onClick={() => {
+            setTextAlign(() => ({ r: true, c: false, l: false }));
+            setStyles('justifyRight');
+          }}
         >
           <AiOutlineAlignRight />
         </button>
@@ -255,8 +293,12 @@ function TextEditor({ setContent }: Props) {
         </button>
 
         <button
+          title='Ordered-List'
           className={`${tagButtons.ol && 'border-teal-400 hover:border-white'}`}
-          onClick={() => setStyles('insertOrderedList')}
+          onClick={() => {
+            setTagButtons((prev) => ({ ...prev, ol: true, ul: false }));
+            setStyles('insertOrderedList');
+          }}
         >
           <AiOutlineOrderedList />
         </button>

@@ -1,6 +1,6 @@
-// import axios from 'axios';
+import axios from 'axios';
 import { useState } from 'react';
-// import { baseUrl } from '../assets/constants';
+import { baseUrl } from '../assets/constants';
 import TextEditor from './TextEditor';
 
 const CreateNote = () => {
@@ -9,27 +9,27 @@ const CreateNote = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
-  // const axiosConfig = {
-  //   withCredentials: true,
-  // };
+  const axiosConfig = {
+    withCredentials: true,
+  };
 
-  // const onSubmit = async () => {
-  //   await axios
-  //   .post(
-  //     `${baseUrl}/notes`,
-  //     {
-  //         title: title,
-  //         content: content,
-  //       },
-  //       axiosConfig
-  //     )
-  //     .then((response) => {
-  //       return response.data.notes;
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  //   };
+  const onSubmit = async () => {
+    await axios
+      .post(
+        `${baseUrl}/notes`,
+        {
+          title: title,
+          content: content,
+        },
+        axiosConfig
+      )
+      .then((response) => {
+        return response.data.notes;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <section className='flex w-full flex-col justify-start items-start gap-6'>
@@ -45,7 +45,7 @@ const CreateNote = () => {
         onChange={(e) => setTitle(e.target.value)}
       />
       <TextEditor setContent={setContent} />
-      <button onClick={() => console.log(content)}>test</button>
+      <button onClick={onSubmit}>test</button>
     </section>
   );
 };
