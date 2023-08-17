@@ -19,9 +19,14 @@ import {
 } from 'react-icons/tb';
 
 import { BsCode } from 'react-icons/bs';
+import axios from 'axios';
+import { baseUrl } from '../assets/constants';
 
 type Props = {
+  html?: string;
   setContent: React.Dispatch<React.SetStateAction<string>>;
+  files: noteImages;
+  setFiles: React.Dispatch<React.SetStateAction<noteImages>>;
 };
 
 interface elementWithSize extends HTMLElement {
@@ -36,10 +41,9 @@ type tagButtons = {
   ul: boolean;
 };
 
-function TextEditor({ setContent }: Props) {
+function TextEditor({ html, setContent, setFiles, files }: Props) {
   const textArea = useRef<HTMLDivElement>(null!);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [files, setFiles] = useState<(string | ArrayBuffer | null)[]>([]);
 
   const [tagButtons, setTagButtons] = useState<tagButtons>({
     b: false,
@@ -80,14 +84,36 @@ function TextEditor({ setContent }: Props) {
     checkFormatting();
   };
 
+  const axiosConfig = {
+    withCredentials: true,
+  };
+
+  const uploadToCloud = async (file: string) => {
+    try {
+      const response = await axios.post(
+        `${baseUrl}/notes/image`,
+        {
+          data: file,
+        },
+        axiosConfig
+      );
+      const imageData = response.data.data;
+      console.log(response.data.data);
+      return imageData;
+    } catch (error) {
+      return null;
+    }
+  };
+
   const insertImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileData = e.target.files?.[0];
     const fileReader = new FileReader();
     if (fileData) {
       fileReader.readAsDataURL(fileData);
-      fileReader.onloadend = () => {
-        setFiles([...files, fileReader.result]);
-        setStyles('insertImage', fileReader.result as string);
+      fileReader.onloadend = async () => {
+        const imageData = await uploadToCloud(fileReader.result as string);
+        setFiles([...files, imageData]);
+        setStyles('insertImage', imageData.url);
       };
     }
   };
@@ -191,9 +217,6 @@ function TextEditor({ setContent }: Props) {
 
   return (
     <div className='w-full flex flex-col gap-4'>
-      <label htmlFor='title' className=' text-xl text-white'>
-        Content :
-      </label>
       <div className='flex gap-2 justify-center items-center'>
         <button
           title='Bold'
@@ -360,6 +383,9 @@ function TextEditor({ setContent }: Props) {
         ref={textArea}
         onClick={checkFormatting}
         onInput={setTheContent}
+        dangerouslySetInnerHTML={{
+          __html: html ?? '<p>Edit your content here!</p>',
+        }}
       />
     </div>
   );

@@ -1,129 +1,60 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { baseUrl } from './assets/constants';
 import { useAuthContext } from './context/Auth/AuthContext';
 import { useFeatureContext } from './context/Feature/FeatureContext';
-import { Alert } from './components';
+import { Alert, ViewPrivateNotes, ViewPublicNotes } from './components';
 
-interface DashboardComponentProps {
-  setScreen: React.Dispatch<React.SetStateAction<currentScreen>>;
-  setUpdateId: React.Dispatch<React.SetStateAction<string>>;
-}
+import { Link } from 'react-router-dom';
 
-const DashBoard = ({ setScreen, setUpdateId }: DashboardComponentProps) => {
+import { useState } from 'react';
+
+const DashBoard = () => {
   document.title = 'Dashboard';
   const {
     state: { user },
   } = useAuthContext();
   const {
-    displayAlert,
     state: { showAlert },
   } = useFeatureContext();
 
+  const [isPrivate, setIsPrivate] = useState(true);
+
   return (
-    <section className='flex flex-col justify-start items-start gap-2 sm:gap-6'>
+    <section className='flex flex-col justify-start items-start gap-2 sm:gap-6 w-full h-full'>
       {showAlert && <Alert />}
       {user ? (
         <>
-          <h1 className=' text-teal-400 font-semibold'>
-            Thank You, {user.name} for using{' '}
+          <div className='absolute right-8 flex gap-4 mt-6'>
+            <button
+              className={`${isPrivate ? 'border-teal-400' : 'border-white'}`}
+              onClick={() => setIsPrivate(true)}
+            >
+              Private
+            </button>
+            <button
+              className={`${isPrivate ? 'border-white' : 'border-teal-400'}`}
+              onClick={() => setIsPrivate(false)}
+            >
+              Discover
+            </button>
+          </div>
+          <h1 className=' text-teal-400 font-semibold mt-8'>
+            Thank You, {user.name} for using
             <span className=' text-red-300'> Notes By Nihal </span>
           </h1>
-
-          <h1 className=' text-teal-400 font-semibold'>Your Notes :</h1>
-          <LoadNotes
-            setUpdateId={setUpdateId}
-            setScreen={setScreen}
-            displayAlert={displayAlert}
-          />
+          {isPrivate ? <ViewPrivateNotes /> : <ViewPublicNotes />}
         </>
       ) : (
-        <h1 className=' text-teal-400 font-semibold'>
-          Please Login to use
-          <span className=' text-red-300'> Notes By Nihal </span>
-        </h1>
+        <div className=' flex justify-center items-center text-teal-400 font-semibold h-full w-full '>
+          <h2 className=' mt-8 text-[32px] text-red-300'>
+            Please
+            <Link to='/auth' className='text-teal-400 mx-2'>
+              Login
+            </Link>
+            to use Notes By Nihal
+          </h2>
+        </div>
       )}
     </section>
   );
 };
 
 export default DashBoard;
-
-interface LoadNotesProps extends DashboardComponentProps {
-  displayAlert: (alertText: string, Success: boolean) => void;
-}
-
-const LoadNotes = ({
-  displayAlert,
-  setScreen,
-  setUpdateId,
-}: LoadNotesProps) => {
-  const [notes, setNotes] = useState<NoteMetaData[]>([]);
-  const axiosConfig = {
-    withCredentials: true,
-  };
-
-  const loadNotes = async () => {
-    await axios
-      .get(`${baseUrl}/notes`, axiosConfig)
-      .then((response) => {
-        if (response.data.notes.length) {
-          setNotes(response.data.notes);
-          displayAlert('Notes Loaded!', true);
-        } else displayAlert('No notes found!', false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const deleteNotes = async (id: string) => {
-    await axios
-      .delete(`${baseUrl}/notes/${id}`, axiosConfig)
-      .then(() => {
-        setNotes(notes.filter((note) => note._id !== id));
-        displayAlert('Note deleted successfully!', true);
-      })
-      .catch(() => {
-        displayAlert('Error Occurred! Try again', true);
-      });
-  };
-
-  useEffect(() => {
-    loadNotes();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return (
-    <div className='flex flex-col gap-4'>
-      {notes.length ? (
-        notes.map((note) => (
-          <div className=' bg-teal-400 text-black px-4 py-2' key={note._id}>
-            <div className='flex gap-4'>
-              <p>{note.title}</p>
-              <button
-                onClick={() => {
-                  setUpdateId(note._id);
-                  setScreen('update');
-                }}
-                className=' text-white py-0 px-2'
-              >
-                🖊
-              </button>
-              <button
-                onClick={() => deleteNotes(note._id)}
-                className='text-white py-0 px-2'
-              >
-                ❌
-              </button>
-            </div>
-            <p>{note.createdAt.toString().slice(0, 10)}</p>
-            <div dangerouslySetInnerHTML={{ __html: note.content }} />
-          </div>
-        ))
-      ) : (
-        <p>No notes found !</p>
-      )}
-    </div>
-  );
-};

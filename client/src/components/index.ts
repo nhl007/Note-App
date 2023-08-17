@@ -3,14 +3,19 @@ import CreateNote from './CreateNote';
 import NavBar from './NavBar';
 import NavButtons from './NavButtons';
 import UpdateNotes from './UpdateNotes';
-import ViewAllNotes from './ViewAllNotes';
+import ViewPrivateNotes from './ViewPrivateNotes';
+import ViewPublicNotes from './ViewPublicNotes';
 import Alert from './Alert';
+import NoteListView from './NoteListView';
+
 export {
   AuthModel,
   CreateNote,
-  ViewAllNotes,
+  ViewPublicNotes,
+  ViewPrivateNotes,
   NavBar,
   NavButtons,
   UpdateNotes,
   Alert,
+  NoteListView,
 };

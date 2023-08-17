@@ -13,3 +13,8 @@ interface reqWithUserData extends Request {
 interface decodedToken extends jwt.JwtPayload {
   id?: string;
 }
+
+type noteImages = {
+  assetId: string;
+  url: string;
+}[];

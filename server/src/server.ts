@@ -1,8 +1,8 @@
-import app from './app';
 import * as dotEnv from 'dotenv';
-import connectToDatabase from './config/database';
-
 dotEnv.config();
+
+import app from './app';
+import connectToDatabase from './config/database';
 
 const host = 'http://localhost';
 const port = process.env.PORT || 5000;

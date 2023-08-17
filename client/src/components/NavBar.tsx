@@ -1,22 +1,20 @@
+import { useState } from 'react';
 import { useAuthContext } from '../context/Auth/AuthContext';
 import NavButtons from './NavButtons';
 
-type navProps = {
-  screen: currentScreen;
-  setScreen: React.Dispatch<React.SetStateAction<currentScreen>>;
-};
+// type navProps = {
+//   screen: currentScreen;
+//   setScreen: React.Dispatch<React.SetStateAction<currentScreen>>;
+// };
 
-const NavBar = ({ screen, setScreen }: navProps) => {
+type screens = 'home' | 'create' | 'login';
+
+const NavBar = () => {
   const {
     state: { token },
     logout,
   } = useAuthContext();
-  const onClickScreen = (name: currentScreen) => {
-    if (name === screen) {
-      return;
-    }
-    setScreen(name);
-  };
+  const [screen, setScreen] = useState<screens>('home');
   return (
     <nav className='w-full flex justify-between items-center'>
       <img
@@ -26,27 +24,35 @@ const NavBar = ({ screen, setScreen }: navProps) => {
         width={28}
         height={28}
       />
-      <div className=' flex gap-3'>
+      <div className=' flex gap-4'>
         <NavButtons
+          to='/'
           name='Home'
           active={screen === 'home' ? true : false}
-          onClick={() => onClickScreen('home')}
+          onClick={() => setScreen('home')}
         />
         {token ? (
           <>
             <NavButtons
               name='Create Note'
+              to='/create'
               active={screen === 'create' ? true : false}
-              onClick={() => onClickScreen('create')}
+              onClick={() => setScreen('create')}
             />
 
-            <NavButtons name='Logout' active={false} onClick={logout} />
+            <NavButtons
+              to='/auth'
+              name='Logout'
+              active={false}
+              onClick={logout}
+            />
           </>
         ) : (
           <NavButtons
+            to='/auth'
             name='Login'
             active={screen === 'login' ? true : false}
-            onClick={() => onClickScreen('login')}
+            onClick={() => setScreen('home')}
           />
         )}
       </div>

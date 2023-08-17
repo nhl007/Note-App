@@ -56,5 +56,13 @@ type NoteMetaData = {
   _id: string;
   title: string;
   content: string;
+  images: noteImages[];
   createdAt: Date;
 };
+
+type noteImages = {
+  assetId: string;
+  url: string;
+}[];
+
+type notePrivacy = 'public' | 'private';
