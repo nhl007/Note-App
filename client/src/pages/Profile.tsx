@@ -6,10 +6,10 @@ import React, { useState } from 'react';
 import { baseUrl } from '../assets/constants';
 import axios from 'axios';
 
-type imageObj = {
-  assetId: string;
-  url: string;
-};
+// type imageObj = {
+//   assetId: string;
+//   url: string;
+// };
 
 const Profile = () => {
   const {
@@ -48,7 +48,7 @@ const Profile = () => {
     }
   };
 
-  const insertImage = async () => {
+  const insertImageAndUpdate = async () => {
     const fileReader = new FileReader();
     if (file) {
       fileReader.readAsDataURL(file);
@@ -66,27 +66,16 @@ const Profile = () => {
   };
 
   const updateInfo = async () => {
-    await insertImage();
-    // console.log(image);
-    // if (file) {
-    //   await insertImage();
-    //   console.log(image)
-
-    // const data = {
-    //   name: name as string,
-    //   email: email as string,
-    //   description: description,
-    //   image: image as imageObj,
-    // };
-    //   await update(data);
-    // } else {
-    //   const data = {
-    //     name: name as string,
-    //     email: email as string,
-    //     description: description,
-    //   };
-    //   await update(data);
-    // }
+    if (file) {
+      await insertImageAndUpdate();
+    } else {
+      const data = {
+        name: name as string,
+        email: email as string,
+        description: description,
+      };
+      await update(data);
+    }
   };
 
   return (
@@ -105,7 +94,7 @@ const Profile = () => {
       <input
         type='file'
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setFile(e.target.files[0])
+          setFile(e.target.files?.[0])
         }
       />
 

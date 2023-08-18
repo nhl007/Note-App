@@ -7,11 +7,12 @@
 ### task for tomorrow :
 
     design upgrades on the dashboard [done]
-    do the profile page
-    auto routing on create auth pages
-    overall improve the auth page
-    do some ux improvements
-    mobile responsive client
+    do the profile page[done]
+    auto routing on create auth pages[done]
+    overall improve the auth page[done]
+    do some ux improvements[done]
+    mobile responsive client[done]
+    add loading feature
     look for improvements
     tests
     deploy

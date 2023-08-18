@@ -30,7 +30,9 @@ type userInfoType = {
 };
 
 const token = localStorage.getItem('token');
-const user: userInfoType = JSON.parse(localStorage.getItem('user') as string);
+const user: userInfoType = localStorage.getItem('user')
+  ? JSON.parse(localStorage.getItem('user') as string)
+  : null;
 
 const initialState: initialAuthContextStateType = {
   token: token ? token : null,
@@ -73,7 +75,10 @@ const AuthProvider = ({ children }: onlyChildrenProps) => {
 
         dispatch({
           type: REGISTER_SUCCESS,
-          payload: user,
+          payload: {
+            token: token as string,
+            user: user as UserModel,
+          },
         });
 
         displayAlert(`Successfully Register A ${name.toUpperCase()} !`, true);
@@ -95,20 +100,19 @@ const AuthProvider = ({ children }: onlyChildrenProps) => {
         axiosConfig
       )
       .then((res) => {
-        const { name, email } = res.data.user;
-        setLocalStorage(res.data.token, {
-          name: name,
-          email: email,
-        });
+        const { token, user } = res.data;
+        console.log(token, user);
+
+        setLocalStorage(token, user);
 
         dispatch({
           type: LOGIN_SUCCESS,
           payload: {
-            name: name,
-            email: email,
-            token: res.data.token,
+            token: token as string,
+            user: user as UserModel,
           },
         });
+
         displayAlert('Successfully logged In !', true);
       })
       .catch((err) => {
@@ -140,7 +144,7 @@ const AuthProvider = ({ children }: onlyChildrenProps) => {
           payload: res.data.user,
         });
 
-        displayAlert('Logout Successful !', true);
+        displayAlert('Profile Updated Successfully !', true);
       })
       .catch((err) => {
         displayAlert(err.response.data.message, false);

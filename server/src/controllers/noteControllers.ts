@@ -37,7 +37,6 @@ export const getASingleNote = catchAsyncErrors(
 
 export const getPublicNotes = catchAsyncErrors(
   async (req: reqWithUserData, res: Response, next: NextFunction) => {
-    console.log(req.user?.id);
     const notes = await Note.find({
       privacy: 'public',
       userId: { $ne: req.user?.id },
@@ -58,18 +57,38 @@ export const getPublicNotes = catchAsyncErrors(
 export const createNotes = catchAsyncErrors(
   async (req: reqWithUserData, res: Response, next: NextFunction) => {
     const userId = req.user?.id;
-    const { title, content, images, privacy } = req.body;
+    const { title, content, images, privacy, id } = req.body;
     if (!title || !content || !userId) {
       return next(
         new errorHandler('Please provide all the necessary data !', 400)
       );
     }
-    const note = await Note.create({ title, content, userId, images, privacy });
+    if (id) {
+      const note = await Note.findOneAndUpdate(
+        { _id: id },
+        { title, content, userId, images, privacy },
+        { upsert: true, new: true }
+      );
 
-    res.status(201).json({
-      success: true,
-      note: note,
-    });
+      res.status(201).json({
+        success: true,
+        message: 'Successfully updated the note!',
+        note: note,
+      });
+    } else {
+      const note = await Note.create({
+        title,
+        content,
+        userId,
+        images,
+        privacy,
+      });
+      res.status(201).json({
+        success: true,
+        message: 'Successfully created a new note!',
+        note: note,
+      });
+    }
   }
 );
 
@@ -77,7 +96,7 @@ export const updateNotes = catchAsyncErrors(async (req, res, next) => {
   const { title, content, privacy, images } = req.body;
   const id = req.params.id;
   if (!id || !title || !content) {
-    return next(new errorHandler('No notes found!', 404));
+    return next(new errorHandler('Please provide valid data!', 404));
   }
   const note = await Note.findByIdAndUpdate(
     id,

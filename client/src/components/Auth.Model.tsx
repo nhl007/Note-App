@@ -29,7 +29,6 @@ const AuthModel = ({ type, setType }: AuthenticationProps) => {
       }
     } else {
       if (!password || !email) {
-        console.log('ok');
         displayAlert('Please provide all the required fields', false);
       } else {
         await login(email, password);
@@ -62,7 +61,7 @@ const AuthModel = ({ type, setType }: AuthenticationProps) => {
                   name='name'
                   type='text'
                   maxLength={40}
-                  className=' h-[48px] w-full px-4 py-[12px] bg-slate-300 focus:outline-none text-[16px] leading-[24px] text-black'
+                  className=' h-[48px] w-full px-4 py-[12px] border-[1px] border-teal-400 bg-transparent text-white rounded-[8px] focus:outline-none text-[16px] leading-[24px] '
                 />
               </div>
             ) : (
@@ -78,7 +77,7 @@ const AuthModel = ({ type, setType }: AuthenticationProps) => {
                 name='email'
                 type='text'
                 maxLength={40}
-                className=' h-[48px] px-4 py-[12px] bg-slate-300  focus:outline-none text-[16px] leading-[24px] text-black'
+                className=' h-[48px] px-4 py-[12px] border-[1px] border-teal-400 bg-transparent text-white rounded-[8px]  focus:outline-none text-[16px] leading-[24px] '
               />
             </div>
             <div className=' flex flex-col gap-[6px]'>
@@ -91,7 +90,7 @@ const AuthModel = ({ type, setType }: AuthenticationProps) => {
                 name='password'
                 type='password'
                 maxLength={40}
-                className=' h-[48px] px-4 py-[12px] bg-slate-300 focus:outline-none text-[16px] leading-[24px] text-black'
+                className=' h-[48px] px-4 py-[12px] border-[1px] border-teal-400 bg-transparent text-white rounded-[8px] focus:outline-none text-[16px] leading-[24px] '
               />
             </div>
             {type === 'register' ? (
@@ -105,7 +104,7 @@ const AuthModel = ({ type, setType }: AuthenticationProps) => {
                   name='password_confirmation'
                   type='password'
                   maxLength={40}
-                  className=' h-[48px] px-4 py-[12px] bg-slate-300 focus:outline-none text-[16px] leading-[24px] text-black'
+                  className=' h-[48px] px-4 py-[12px] border-[1px] border-teal-400 bg-transparent text-white rounded-[8px] focus:outline-none text-[16px] leading-[24px] '
                 />
               </div>
             ) : (

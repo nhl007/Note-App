@@ -16,13 +16,13 @@ const NavBar = () => {
   return (
     <nav className='w-full flex justify-between items-center'>
       <img
-        src='/vite.svg'
+        src='/logo.webp'
         alt='logo'
         className='w-7 h-7 sm:w-10 sm:h-10'
         width={28}
         height={28}
       />
-      <div className=' flex gap-4'>
+      <div className=' flex gap-2 sm:gap-4'>
         <NavButtons
           to='/'
           name='Home'
@@ -42,15 +42,13 @@ const NavBar = () => {
                 setScreen('profile');
                 navigate('/profile');
               }}
-              className=' cursor-pointer flex justify-center items-center bg-teal-400 text-black rounded-[28px] w-11 h-11 text-xl'
+              className=' cursor-pointer flex justify-center items-center bg-teal-400 text-black sm:rounded-[28px] rounded-[16px] w-8 h-8 text-lg sm:w-11 sm:h-11 sm:text-xl'
             >
               {user?.image?.url ? (
                 <img
-                  className='rounded-[22px] w-11 h-11 object-cover'
+                  className='rounded-[22px] w-8 h-8 sm:w-11 sm:h-11 object-cover'
                   src={user.image.url}
                   alt='img'
-                  width={40}
-                  height={40}
                 />
               ) : (
                 user?.name.charAt(0).toUpperCase()

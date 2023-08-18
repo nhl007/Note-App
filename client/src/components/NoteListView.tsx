@@ -18,19 +18,17 @@ function NoteListView({ notes, isPrivate, deleteNotes }: Props) {
       {notes.length ? (
         notes.map((note) => (
           <div
-            className=' w-full  border-teal-400 border-[1px] text-white px-6 py-3 rounded-lg relative'
+            className=' w-full border-teal-400 border-[1px] text-white px-2 sm:px-6 sm:py-3 py-1 sm:rounded-lg rounded-md relative'
             key={note._id}
           >
-            <div className=' flex items-center gap-6 py-2'>
+            <div className=' flex items-center gap-2 sm:gap-6 py-2'>
               <div className='flex items-center gap-2'>
-                <div className='flex justify-center items-center bg-teal-400 text-black rounded-[28px] w-14 h-14 text-xl'>
+                <div className='flex justify-center items-center bg-teal-400 text-black rounded-[28px] w-11 h-11 sm:w-14 sm:h-14 sm:text-xl text-lg'>
                   {note.userId.image?.url ? (
                     <img
-                      className='rounded-[28px] w-14 h-14 object-cover'
+                      className='rounded-[28px] sm:w-14 sm:h-14 h-11 w-11 object-cover'
                       src={note.userId.image.url}
                       alt='img'
-                      width={48}
-                      height={48}
                     />
                   ) : (
                     note.userId.name.charAt(0).toUpperCase()
@@ -58,7 +56,7 @@ function NoteListView({ notes, isPrivate, deleteNotes }: Props) {
             </div>
             <span>{note.title}</span>
             {isPrivate && (
-              <div className=' flex absolute right-4 top-2'>
+              <div className=' flex absolute sm:right-4 sm:top-2 right-0 top-1'>
                 <Link
                   title='Edit'
                   to={'/update/' + note._id}

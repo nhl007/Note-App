@@ -53,13 +53,7 @@ type initialAuthContextStateType = {
 type authContextActionsType = {
   type: string;
   payload?: {
-    name?: string;
-    email?: string;
-    description?: string;
-    image?: {
-      assetId?: string;
-      url?: string;
-    };
+    user?: UserModel;
     token?: string;
   };
 };

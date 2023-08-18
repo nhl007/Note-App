@@ -21,6 +21,7 @@ import {
 import { BsCode } from 'react-icons/bs';
 import axios from 'axios';
 import { baseUrl } from '../assets/constants';
+import { rgbToHex } from '../utils/rgbToHex';
 
 type Props = {
   html?: string;
@@ -31,6 +32,9 @@ type Props = {
 
 interface elementWithSize extends HTMLElement {
   size: string;
+}
+interface elementWithColor extends HTMLElement {
+  color: string;
 }
 
 type tagButtons = {
@@ -98,7 +102,7 @@ function TextEditor({ html, setContent, setFiles, files }: Props) {
         axiosConfig
       );
       const imageData = response.data.data;
-      console.log(response.data.data);
+      // console.log(response.data.data);
       return imageData;
     } catch (error) {
       return null;
@@ -136,13 +140,22 @@ function TextEditor({ html, setContent, setFiles, files }: Props) {
 
     if (range) {
       const startContainer = range.startContainer;
-      ['b', 'i', 'u', 'ol', 'ul', 'font', 'div', 'pre', 'img'].forEach(
+      // console.log(range.startContainer.parentNode);
+
+      ['b', 'i', 'u', 'ol', 'ul', 'font', 'div', 'pre', 'img', 'span'].forEach(
         (tag) => {
           setTagButtons((prev) => ({ ...prev, [tag]: hasParent }));
 
           const { hasParent, element } = closest(startContainer, tag);
           // console.log(hasParent, tag);
+
           if (tag === 'font' && element) {
+            const color = (element as elementWithColor).color;
+            if (color) {
+              setColor(() => color);
+            } else {
+              setColor(() => '#ffffff');
+            }
             const size = (element as elementWithSize).size;
             size === '5'
               ? setFontSize(() => ({
@@ -162,7 +175,10 @@ function TextEditor({ html, setContent, setFiles, files }: Props) {
                   l: false,
                 }));
           }
+
           if (!hasParent && tag === 'font') {
+            setColor(() => '#ffffff');
+
             setFontSize((prev) => ({
               ...prev,
               s: true,
@@ -193,6 +209,14 @@ function TextEditor({ html, setContent, setFiles, files }: Props) {
                 }));
           }
 
+          if (tag === 'span' && hasParent) {
+            const color = element?.style.backgroundColor as string;
+            const hex = rgbToHex(color);
+            setHiliteColor(() => hex);
+          } else {
+            setHiliteColor('#1c1c1c');
+          }
+
           if (!hasParent && tag === 'div') {
             setTextAlign(() => ({
               l: true,
@@ -217,7 +241,7 @@ function TextEditor({ html, setContent, setFiles, files }: Props) {
 
   return (
     <div className='w-full flex flex-col gap-4'>
-      <div className='flex gap-2 justify-center items-center'>
+      <div className='flex gap-2 justify-center items-center flex-wrap'>
         <button
           title='Bold'
           className={`${tagButtons.b && 'border-teal-400 hover:border-white'}`}
@@ -367,7 +391,7 @@ function TextEditor({ html, setContent, setFiles, files }: Props) {
         />
         <input
           title='Upload Image'
-          className=' bg-black text-teal-400 rounded-[8px] max-w-[123px]'
+          className=' bg-black text-teal-400 rounded-[8px] max-w-[88px] sm:max-w-[123px]'
           type='file'
           accept='image/x-png,image/gif,image/jpeg'
           onChange={insertImage}
@@ -378,7 +402,7 @@ function TextEditor({ html, setContent, setFiles, files }: Props) {
         />
       </div>
       <div
-        className='text__editor min-w-full min-h-[300px] border-[2px] border-teal-400 p-[10px] whitespace-pre-wrap'
+        className='text__editor min-w-full min-h-[300px] border-[1px] border-teal-400 p-[10px] whitespace-pre-wrap rounded-md sm:rounded-[10px]'
         contentEditable='true'
         ref={textArea}
         onClick={checkFormatting}

@@ -12,7 +12,9 @@ const NavButtons = ({ name, to, onClick, active }: buttonProps) => {
     <Link
       onClick={onClick}
       to={to}
-      className={`${active ? 'bg-teal-400 text-black' : ''}`}
+      className={`${
+        active ? 'bg-teal-400 text-black' : ''
+      } flex justify-center items-center`}
     >
       {name}
     </Link>

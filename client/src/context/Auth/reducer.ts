@@ -13,17 +13,14 @@ const reducer = (
     return {
       ...state,
       token: action.payload?.token as string,
-      user: action.payload as UserModel,
+      user: action.payload?.user as UserModel,
     };
   }
   if (action.type === LOGIN_SUCCESS) {
     return {
       ...state,
       token: action.payload?.token as string,
-      user: {
-        name: action.payload?.name as string,
-        email: action.payload?.email as string,
-      },
+      user: action.payload?.user as UserModel,
     };
   }
   if (action.type === LOGOUT_SUCCESS) {

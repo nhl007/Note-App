@@ -22,7 +22,7 @@ const DashBoard = () => {
       {showAlert && <Alert />}
       {user ? (
         <>
-          <div className='absolute right-8 flex gap-4 mt-6'>
+          <div className='absolute right-4  sm:right-8 flex gap-4 mt-0 sm:mt-6'>
             <button
               className={`${isPrivate ? 'border-teal-400' : 'border-white'}`}
               onClick={() => setIsPrivate(true)}
@@ -36,15 +36,16 @@ const DashBoard = () => {
               Discover
             </button>
           </div>
-          <h1 className=' text-teal-400 font-semibold mt-8'>
-            Thank You, {user.name} for using
+          <h1 className=' text-teal-400 font-semibold sm:mt-8 mt-12 mb-2 '>
+            Thank You, <span className='text-red-300'>{user.name}</span> for
+            using
             <span className=' text-red-300'> Notes By Nihal </span>
           </h1>
           {isPrivate ? <ViewPrivateNotes /> : <ViewPublicNotes />}
         </>
       ) : (
         <div className=' flex justify-center items-center text-teal-400 font-semibold h-full w-full '>
-          <h2 className=' mt-8 text-[32px] text-red-300'>
+          <h2 className=' mt-8 text-xl sm:text-[32px] text-red-300'>
             Please
             <Link to='/auth' className='text-teal-400 mx-2'>
               Login
