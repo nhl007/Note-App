@@ -8,6 +8,7 @@ import cloud from '../config/cloudinary';
 export const getNotes = catchAsyncErrors(
   async (req: reqWithUserData, res: Response, next: NextFunction) => {
     const notes = await Note.find({ userId: req.user?.id })
+      .populate('userId')
       .limit(10)
       .sort({ createdAt: 'desc' });
     if (!notes) {
@@ -41,6 +42,7 @@ export const getPublicNotes = catchAsyncErrors(
       privacy: 'public',
       userId: { $ne: req.user?.id },
     })
+      .populate('userId')
       .limit(10)
       .sort({ createdAt: 'desc' });
     if (!notes) {

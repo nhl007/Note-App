@@ -6,8 +6,14 @@ import { useParams } from 'react-router-dom';
 import TextEditor from './TextEditor';
 import Dropdown from './Dropdown';
 
+import { BiArrowBack } from 'react-icons/bi';
+
+import { useNavigate } from 'react-router-dom';
+
 const UpdateNotes = () => {
   document.title = 'Update Notes';
+
+  const navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -63,7 +69,9 @@ const UpdateNotes = () => {
 
   return (
     <section className='flex w-full flex-col justify-start items-start gap-6'>
-      <h1 className=' mt-6 text-teal-400 font-semibold'>Create A New Note</h1>
+      <button onClick={() => navigate('/')} className=' mt-4'>
+        <BiArrowBack />
+      </button>
       <div className=' flex gap-3 relative items-center'>
         <input
           className='border-[2px] min-w-[350px] border-teal-400 bg-transparent placeholder:text-white text-white rounded-[10px] p-[10px]'
@@ -82,7 +90,7 @@ const UpdateNotes = () => {
         setFiles={setFiles}
         setContent={setContent}
       />
-      <button onClick={onSubmit}>test</button>
+      <button onClick={onSubmit}>Save</button>
     </section>
   );
 };

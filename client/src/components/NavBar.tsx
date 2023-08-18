@@ -2,16 +2,14 @@ import { useState } from 'react';
 import { useAuthContext } from '../context/Auth/AuthContext';
 import NavButtons from './NavButtons';
 
-// type navProps = {
-//   screen: currentScreen;
-//   setScreen: React.Dispatch<React.SetStateAction<currentScreen>>;
-// };
+import { useNavigate } from 'react-router-dom';
 
-type screens = 'home' | 'create' | 'login';
+type screens = 'home' | 'create' | 'login' | 'profile';
 
 const NavBar = () => {
+  const navigate = useNavigate();
   const {
-    state: { token },
+    state: { token, user },
     logout,
   } = useAuthContext();
   const [screen, setScreen] = useState<screens>('home');
@@ -39,6 +37,25 @@ const NavBar = () => {
               active={screen === 'create' ? true : false}
               onClick={() => setScreen('create')}
             />
+            <div
+              onClick={() => {
+                setScreen('profile');
+                navigate('/profile');
+              }}
+              className=' cursor-pointer flex justify-center items-center bg-teal-400 text-black rounded-[28px] w-11 h-11 text-xl'
+            >
+              {user?.image?.url ? (
+                <img
+                  className='rounded-[22px] w-11 h-11 object-cover'
+                  src={user.image.url}
+                  alt='img'
+                  width={40}
+                  height={40}
+                />
+              ) : (
+                user?.name.charAt(0).toUpperCase()
+              )}
+            </div>
 
             <NavButtons
               to='/auth'

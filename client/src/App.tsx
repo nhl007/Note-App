@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import DashBoard from './DashBoard';
 import Authentication from './Authentication';
 import { CreateNote, UpdateNotes, NavBar } from './components';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path='/create' element={<CreateNote />} />
         <Route path='update/:id' element={<UpdateNotes />} />
         <Route path='/auth' element={<Authentication />} />
+        <Route path='/profile' element={<Profile />} />
       </Routes>
     </div>
   );

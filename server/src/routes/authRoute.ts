@@ -5,7 +5,7 @@ import {
   logoutUser,
   signInUser,
   updateProfile,
-  updateUserPassword,
+  // updateUserPassword,
 } from './../controllers/authController';
 import { Router } from 'express';
 
@@ -14,6 +14,7 @@ const authRouter = Router();
 authRouter.route('/register').post(registerUser);
 authRouter.route('/login').post(signInUser);
 authRouter.route('/logout').get(logoutUser);
+authRouter.route('/update').post(protectRoutes, updateProfile);
 authRouter.route('/profile').get(protectRoutes, getUserProfile);
 
 export default authRouter;

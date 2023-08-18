@@ -9,6 +9,11 @@ export interface IUser {
   email: string;
   password: string;
   created_At: Date;
+  description: string;
+  image: {
+    assetId: string;
+    url: string;
+  };
 }
 export interface IUserMethods {
   getJwtToken(): string;
@@ -39,6 +44,19 @@ const userSchema = new mongoose.Schema<IUser>({
     ],
     select: false,
   },
+  description: {
+    type: 'string',
+    required: false,
+  },
+  image: {
+    url: {
+      type: String,
+    },
+    assetId: {
+      type: String,
+    },
+  },
+
   created_At: {
     type: Date,
     default: Date.now(),

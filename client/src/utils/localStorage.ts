@@ -1,7 +1,4 @@
-export const setLocalStorage = (
-  token: string,
-  user: { name: string; email: string }
-) => {
+export const setLocalStorage = (token: string, user: UserModel) => {
   localStorage.setItem('token', token);
   localStorage.setItem('user', JSON.stringify(user));
 };

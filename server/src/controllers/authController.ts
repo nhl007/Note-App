@@ -70,17 +70,19 @@ export const updateProfile = catchAsyncErrors(
     const newData = {
       name: req.body.name,
       email: req.body.email,
+      description: req.body.description,
+      image: req.body.image,
     };
     const user = await User.findByIdAndUpdate(req.user?.id, newData, {
       new: true,
       runValidators: true,
       useFindAndModify: false,
     });
-    res.status(200).send({ success: true, user });
+    res.status(200).send({ success: true, user: user });
   }
 );
 
-//! get user profile
+//! update password
 
 export const updateUserPassword = catchAsyncErrors(
   async (req: reqWithUserData, res, next) => {

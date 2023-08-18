@@ -2,7 +2,12 @@ import { createContext, useContext, useReducer } from 'react';
 import reducer from './reducer';
 import { baseUrl } from '../../assets/constants';
 import axios, { AxiosRequestConfig } from 'axios';
-import { LOGIN_SUCCESS, LOGOUT_SUCCESS, REGISTER_SUCCESS } from '../actions';
+import {
+  LOGIN_SUCCESS,
+  LOGOUT_SUCCESS,
+  REGISTER_SUCCESS,
+  UPDATE_SUCCESS,
+} from '../actions';
 import { useFeatureContext } from '../Feature/FeatureContext';
 import { removeLocalStorage, setLocalStorage } from '../../utils/localStorage';
 
@@ -11,10 +16,21 @@ type AuthContextType = {
   register: (name: string, email: string, password: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  update: (data: userInfoType) => Promise<void>;
+};
+
+type userInfoType = {
+  name: string;
+  email: string;
+  description?: string;
+  image?: {
+    assetId: string;
+    url: string;
+  };
 };
 
 const token = localStorage.getItem('token');
-const user = JSON.parse(localStorage.getItem('user') as string);
+const user: userInfoType = JSON.parse(localStorage.getItem('user') as string);
 
 const initialState: initialAuthContextStateType = {
   token: token ? token : null,
@@ -26,6 +42,7 @@ const initialContextValue: AuthContextType = {
   login: async () => {},
   register: async () => {},
   logout: () => {},
+  update: async () => {},
 };
 
 const AuthContext = createContext<AuthContextType>(initialContextValue);
@@ -51,19 +68,12 @@ const AuthProvider = ({ children }: onlyChildrenProps) => {
         axiosConfig
       )
       .then((res) => {
-        const { name, email } = res.data.user;
-        setLocalStorage(res.data.token, {
-          name: name,
-          email: email,
-        });
+        const { token, user } = res.data;
+        setLocalStorage(token, user);
 
         dispatch({
           type: REGISTER_SUCCESS,
-          payload: {
-            name: name,
-            email: email,
-            token: res.data.token,
-          },
+          payload: user,
         });
 
         displayAlert(`Successfully Register A ${name.toUpperCase()} !`, true);
@@ -120,6 +130,23 @@ const AuthProvider = ({ children }: onlyChildrenProps) => {
       });
   };
 
+  const update = async (data: userInfoType) => {
+    await axios
+      .post(`${baseUrl}/auth/update`, data, axiosConfig)
+      .then((res) => {
+        setLocalStorage(state.token!, res.data.user);
+        dispatch({
+          type: UPDATE_SUCCESS,
+          payload: res.data.user,
+        });
+
+        displayAlert('Logout Successful !', true);
+      })
+      .catch((err) => {
+        displayAlert(err.response.data.message, false);
+      });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -127,6 +154,7 @@ const AuthProvider = ({ children }: onlyChildrenProps) => {
         register,
         login,
         logout,
+        update,
       }}
     >
       {children}

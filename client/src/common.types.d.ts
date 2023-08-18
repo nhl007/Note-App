@@ -35,11 +35,18 @@ type featureContextActionsType = {
 
 //?auth context types
 
+type UserModel = {
+  name: string;
+  email: string;
+  description?: string;
+  image?: {
+    assetId?: string;
+    url?: string;
+  };
+};
+
 type initialAuthContextStateType = {
-  user: {
-    name: string;
-    email: string;
-  } | null;
+  user: UserModel | null;
   token: string | null;
 };
 
@@ -48,6 +55,11 @@ type authContextActionsType = {
   payload?: {
     name?: string;
     email?: string;
+    description?: string;
+    image?: {
+      assetId?: string;
+      url?: string;
+    };
     token?: string;
   };
 };
@@ -56,7 +68,9 @@ type NoteMetaData = {
   _id: string;
   title: string;
   content: string;
+  privacy: string;
   images: noteImages[];
+  userId: UserModel;
   createdAt: Date;
 };
 
