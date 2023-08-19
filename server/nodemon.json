@@ -1,7 +1,7 @@
 {
   "signal": "SIGTERM",
   "env": {
-    "NODE_ENV": "DEV"
+    "NODE_ENV": "production"
   },
   "ext": "ts",
   "exec": "ts-node -- src/server.ts"

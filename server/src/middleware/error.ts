@@ -17,12 +17,12 @@ export const handleErrors = (
   res: Response,
   next: NextFunction
 ) => {
-  const nodeEnv = process.env.NODE_ENV || 'DEV';
+  const nodeEnv = process.env.NODE_ENV || 'development';
 
   err.status = err.status || 500;
   err.message = err.message || 'Enteral server error';
 
-  if (nodeEnv === 'PROD') {
+  if (nodeEnv === 'development') {
     return res.status(err.status).json({
       success: false,
       errors: err,
