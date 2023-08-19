@@ -1,0 +1,1 @@
+{"version":3,"file":"catchAsyncErrors.js","sourceRoot":"","sources":["../../src/middleware/catchAsyncErrors.ts"],"names":[],"mappings":";;AAGA,MAAM,gBAAgB,GACpB,CAAC,IAAgB,EAAE,EAAE,CAAC,CAAC,GAAY,EAAE,GAAa,EAAE,IAAkB,EAAE,EAAE;IACxE,OAAO,CAAC,OAAO,CAAC,IAAI,CAAC,GAAG,EAAE,GAAG,EAAE,IAAI,CAAC,CAAC,CAAC,KAAK,CAAC,IAAI,CAAC,CAAC;AACpD,CAAC,CAAC;AAEJ,kBAAe,gBAAgB,CAAC"}
