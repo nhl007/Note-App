@@ -13,9 +13,7 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const app = (0, express_1.default)();
 const whitelist = process.env.WHITELIST;
 app.use((0, cors_1.default)({
-    origin: whitelist,
-    methods: 'GET,POST,PUT,DELETE,PATCH',
-    allowedHeaders: 'Content-Type,Authorization',
+    origin: '*',
 }));
 // app.disable('x-powered-by');
 // app.use(helmet());

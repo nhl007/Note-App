@@ -14,9 +14,7 @@ const whitelist = process.env.WHITELIST as string;
 
 app.use(
   cors({
-    origin: whitelist,
-    methods: 'GET,POST,PUT,DELETE,PATCH',
-    allowedHeaders: 'Content-Type,Authorization',
+    origin: '*',
   })
 );
 

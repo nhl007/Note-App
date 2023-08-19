@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const connectToDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
     const environment = process.env.ENVIRONMENT || 'development';
-    console.log(environment);
     const dbUri = environment === 'production'
         ? process.env.MONGO_PROD_URL
         : process.env.DB_LOCAl_URI;
