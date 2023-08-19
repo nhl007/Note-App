@@ -1,10 +1,10 @@
-import jwt from 'jsonwebtoken';
 import { Request } from 'express';
+import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 
 interface reqWithUserData extends Request {
   user?: {
-    id: mongoose.Schema.ObjectId;
+    id: typeof mongoose.Schema.ObjectId;
     name?: string;
     email?: string;
   };

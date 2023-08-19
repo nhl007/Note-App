@@ -1,4 +1,4 @@
-import { reqWithUserData } from '../../types';
+import { reqWithUserData } from '../types';
 import catchAsyncErrors from '../middleware/catchAsyncErrors';
 import User from '../models/user';
 import errorHandler from '../utils/errorHandler';

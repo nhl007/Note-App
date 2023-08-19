@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import catchAsyncErrors from './catchAsyncErrors';
 import errorHandler from '../utils/errorHandler';
 import User from '../models/user';
-import { decodedToken, reqWithUserData } from '../../types';
+import { decodedToken, reqWithUserData } from '../types';
 
 const protectRoutes = catchAsyncErrors(
   async (req: reqWithUserData, res, next) => {

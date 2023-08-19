@@ -1,13 +1,14 @@
 import mongoose from 'mongoose';
 
-const connectToDatabase = () => {
+const connectToDatabase = async () => {
   const environment = process.env.NODE_ENV || 'development';
+  console.log(environment);
   const dbUri: string =
     environment === 'production'
       ? (process.env.MONGO_PROD_URL as string)
       : (process.env.DB_LOCAl_URI as string);
 
-  mongoose
+  await mongoose
     .connect(dbUri, {
       dbName: process.env.DB_NAME as string,
     })

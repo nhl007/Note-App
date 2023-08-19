@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import catchAsyncErrors from '../middleware/catchAsyncErrors';
 import errorHandler from '../utils/errorHandler';
 import Note from '../models/notes';
-import { noteImages, reqWithUserData } from '../../types';
+import { noteImages, reqWithUserData } from '../types';
 import cloud from '../config/cloudinary';
 
 export const getNotes = catchAsyncErrors(
