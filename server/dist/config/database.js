@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const connectToDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
-    const environment = process.env.NODE_ENV || 'development';
+    const environment = process.env.ENVIRONMENT || 'development';
     console.log(environment);
     const dbUri = environment === 'production'
         ? process.env.MONGO_PROD_URL
@@ -27,7 +27,7 @@ const connectToDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
         if (environment.match('development')) {
             console.log(`Connected to MongoDB with Host: ${con.connection.host}:${con.connection.port}`);
         }
-        if (environment.match('PROD')) {
+        if (environment.match('production')) {
             console.log('Connected to MongoDB in Production Environment !');
         }
     })

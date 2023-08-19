@@ -8,18 +8,17 @@ const cors_1 = __importDefault(require("cors"));
 const noteRoute_1 = __importDefault(require("./routes/noteRoute"));
 const authRoute_1 = __importDefault(require("./routes/authRoute"));
 const error_1 = require("./middleware/error");
-const helmet_1 = __importDefault(require("helmet"));
+// import helmet from 'helmet';
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const app = (0, express_1.default)();
 const whitelist = process.env.WHITELIST;
-console.log(whitelist);
 app.use((0, cors_1.default)({
     origin: whitelist,
     methods: 'GET,POST,PUT,DELETE,PATCH',
     allowedHeaders: 'Content-Type,Authorization',
 }));
-app.disable('x-powered-by');
-app.use((0, helmet_1.default)());
+// app.disable('x-powered-by');
+// app.use(helmet());
 app.use(express_1.default.json({ limit: '50mb' }));
 app.use(express_1.default.urlencoded({ limit: '50mb', extended: false }));
 app.use((0, cookie_parser_1.default)());

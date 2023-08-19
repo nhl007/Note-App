@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleErrors = void 0;
 const handleErrors = (err, req, res, next) => {
-    const nodeEnv = process.env.NODE_ENV || 'development';
+    const nodeEnv = process.env.ENVIRONMENT || 'development';
     err.status = err.status || 500;
     err.message = err.message || 'Enteral server error';
     if (nodeEnv === 'development') {

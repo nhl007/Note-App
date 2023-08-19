@@ -8,7 +8,7 @@ const sendToken = (user, res, statusCode) => {
         maxAge: sevenDay,
         sameSite: 'strict',
     };
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.ENVIRONMENT === 'production') {
         cookieOptions = {
             httpOnly: true,
             maxAge: sevenDay,

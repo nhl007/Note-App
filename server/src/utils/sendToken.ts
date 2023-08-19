@@ -16,7 +16,7 @@ const sendToken = (
     sameSite: 'strict',
   };
 
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.ENVIRONMENT === 'production') {
     cookieOptions = {
       httpOnly: true,
       maxAge: sevenDay,

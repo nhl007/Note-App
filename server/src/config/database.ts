@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
 
 const connectToDatabase = async () => {
-  const environment = process.env.NODE_ENV || 'development';
-  console.log(environment);
+  const environment = process.env.ENVIRONMENT || 'development';
   const dbUri: string =
     environment === 'production'
       ? (process.env.MONGO_PROD_URL as string)
@@ -18,7 +17,7 @@ const connectToDatabase = async () => {
           `Connected to MongoDB with Host: ${con.connection.host}:${con.connection.port}`
         );
       }
-      if (environment.match('PROD')) {
+      if (environment.match('production')) {
         console.log('Connected to MongoDB in Production Environment !');
       }
     })

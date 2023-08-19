@@ -17,7 +17,7 @@ export const handleErrors = (
   res: Response,
   next: NextFunction
 ) => {
-  const nodeEnv = process.env.NODE_ENV || 'development';
+  const nodeEnv = process.env.ENVIRONMENT || 'development';
 
   err.status = err.status || 500;
   err.message = err.message || 'Enteral server error';
