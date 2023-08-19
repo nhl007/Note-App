@@ -8,32 +8,16 @@ const cors_1 = __importDefault(require("cors"));
 const noteRoute_1 = __importDefault(require("./routes/noteRoute"));
 const authRoute_1 = __importDefault(require("./routes/authRoute"));
 const error_1 = require("./middleware/error");
-const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 const helmet_1 = __importDefault(require("helmet"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const app = (0, express_1.default)();
-const whitelist = process.env.WHITELIST.split(',');
-const corsOptions = {
-    credentials: true,
-    origin: (origin, callback) => {
-        // `!origin` allows server-to-server requests (ie, localhost requests)
-        if (!origin || whitelist.indexOf(origin) !== -1) {
-            callback(null, true);
-        }
-        else {
-            callback(new Error('Not allowed by CORS: ' + origin));
-        }
-    },
-    optionsSuccessStatus: 200,
-};
-app.use((0, cors_1.default)(corsOptions));
-const limiter = (0, express_rate_limit_1.default)({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    standardHeaders: true,
-    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-});
-app.use(limiter);
+const whitelist = process.env.WHITELIST;
+console.log(whitelist);
+app.use((0, cors_1.default)({
+    origin: whitelist,
+    methods: 'GET,POST,PUT,DELETE,PATCH',
+    allowedHeaders: 'Content-Type,Authorization',
+}));
 app.disable('x-powered-by');
 app.use((0, helmet_1.default)());
 app.use(express_1.default.json({ limit: '50mb' }));
