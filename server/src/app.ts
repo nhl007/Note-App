@@ -10,6 +10,7 @@ import { handleErrors } from './middleware/error';
 const app: Application = express();
 
 const whitelist = process.env.WHITELIST.split(',');
+console.log(whitelist);
 const corsOptions: CorsOptions = {
   credentials: true,
   origin: (origin, callback) => {

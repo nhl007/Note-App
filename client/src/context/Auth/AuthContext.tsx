@@ -1,7 +1,7 @@
 import { createContext, useContext, useReducer } from 'react';
 import reducer from './reducer';
 import { baseUrl } from '../../assets/constants';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import {
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
@@ -49,9 +49,8 @@ const initialContextValue: AuthContextType = {
 
 const AuthContext = createContext<AuthContextType>(initialContextValue);
 
-const axiosConfig = {
+const axiosConfig: AxiosRequestConfig = {
   withCredentials: true,
-  credentials: 'include',
 };
 
 const AuthProvider = ({ children }: onlyChildrenProps) => {
@@ -61,11 +60,15 @@ const AuthProvider = ({ children }: onlyChildrenProps) => {
 
   const register = async (name: string, email: string, password: string) => {
     await axios
-      .post(`${baseUrl}/auth/register`, {
-        name: name,
-        email: email,
-        password: password,
-      })
+      .post(
+        `${baseUrl}/auth/register`,
+        {
+          name: name,
+          email: email,
+          password: password,
+        },
+        axiosConfig
+      )
       .then((res) => {
         const { token, user } = res.data;
         setLocalStorage(token, user);
@@ -88,13 +91,16 @@ const AuthProvider = ({ children }: onlyChildrenProps) => {
 
   const login = async (email: string, password: string) => {
     await axios
-      .post(`${baseUrl}/auth/login`, {
-        email: email,
-        password: password,
-      })
+      .post(
+        `${baseUrl}/auth/login`,
+        {
+          email: email,
+          password: password,
+        },
+        axiosConfig
+      )
       .then((res) => {
         const { token, user } = res.data;
-        console.log(token, user);
 
         setLocalStorage(token, user);
 

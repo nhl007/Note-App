@@ -32,11 +32,12 @@ export const signInUser = catchAsyncErrors(async (req, res, next) => {
     return next(new errorHandler('Please input correct password', 401));
   }
 
-  const isUser = user.comparePassword(password);
+  const isUser = await user.comparePassword(password);
 
   if (!isUser) {
     return next(new errorHandler('Please input correct password', 401));
   }
+
   sendToken(user, res, 200);
 });
 

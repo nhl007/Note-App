@@ -4,8 +4,7 @@ import { Alert, ViewPrivateNotes, ViewPublicNotes } from './components';
 
 import { Link } from 'react-router-dom';
 
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 
 const DashBoard = () => {
   document.title = 'Dashboard';
@@ -17,17 +16,6 @@ const DashBoard = () => {
   } = useFeatureContext();
 
   const [isPrivate, setIsPrivate] = useState(true);
-
-  useEffect(() => {
-    axios
-      .get('https://nhl-note-api.vercel.app/')
-      .then((response) => {
-        response;
-      })
-      .catch(() => {
-        console.log('sss');
-      });
-  }, []);
 
   return (
     <section className='flex flex-col justify-start items-start gap-2 sm:gap-6 w-full h-full'>

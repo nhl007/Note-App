@@ -41,7 +41,7 @@ const Profile = () => {
         axiosConfig
       );
       const imageData = response.data.data;
-      console.log(response.data.data);
+
       return imageData;
     } catch (error) {
       return null;

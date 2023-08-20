@@ -17,7 +17,7 @@ export interface IUser {
 }
 export interface IUserMethods {
   getJwtToken(): string;
-  comparePassword(password: string): boolean;
+  comparePassword(password: string): Promise<boolean>;
 }
 
 type UserModel = mongoose.Model<IUser, {}, IUserMethods>;

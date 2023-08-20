@@ -11,9 +11,8 @@ const sendToken = (
   const sevenDay = 7 * 1000 * 60 * 60 * 24;
 
   let cookieOptions: CookieOptions = {
-    httpOnly: true,
+    httpOnly: false,
     maxAge: sevenDay,
-    sameSite: 'strict',
   };
 
   if (process.env.ENVIRONMENT === 'production') {
