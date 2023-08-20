@@ -1,16 +1,15 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
+import cookieParser from 'cookie-parser';
 import cors, { CorsOptions } from 'cors';
+// import helmet from 'helmet';
+
 import notesRouter from './routes/noteRoute';
 import authRouter from './routes/authRoute';
 import { handleErrors } from './middleware/error';
 
-// import helmet from 'helmet';
-
-import cookieParser from 'cookie-parser';
-
 const app: Application = express();
 
-const whitelist = process.env.WHITELIST as string;
+const whitelist = process.env.WHITELIST.split(',');
 const corsOptions: CorsOptions = {
   credentials: true,
   origin: (origin, callback) => {
@@ -28,9 +27,10 @@ app.use(cors(corsOptions));
 
 // app.disable('x-powered-by');
 // app.use(helmet());
+
 app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: false }));
 app.use(cookieParser());
+app.use(express.urlencoded({ limit: '50mb', extended: false }));
 
 app.get('/', (req: Request, res: Response) => {
   res.json({
