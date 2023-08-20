@@ -13,6 +13,7 @@ const sendToken = (
   let cookieOptions: CookieOptions = {
     httpOnly: false,
     maxAge: sevenDay,
+    sameSite: 'strict',
   };
 
   if (process.env.ENVIRONMENT === 'production') {
