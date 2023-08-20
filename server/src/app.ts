@@ -1,7 +1,7 @@
 import express, { Application, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import cors, { CorsOptions } from 'cors';
-import helmet from 'helmet';
+// import helmet from 'helmet';
 
 import notesRouter from './routes/noteRoute';
 import authRouter from './routes/authRoute';
@@ -25,9 +25,9 @@ const corsOptions: CorsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(helmet());
+// app.use(helmet());
 
-app.disable('x-powered-by');
+// app.disable('x-powered-by');
 
 app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());

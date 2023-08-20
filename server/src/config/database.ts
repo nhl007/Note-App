@@ -1,25 +1,28 @@
 import mongoose from 'mongoose';
 
 const connectToDatabase = () => {
-  const environment = process.env.ENVIRONMENT || 'development';
-  const dbUri: string =
-    environment === 'production'
-      ? (process.env.MONGO_PROD_URL as string)
-      : (process.env.DB_LOCAl_URI as string);
+  // const environment = process.env.ENVIRONMENT || 'development';
+  // const dbUri: string =
+  //   environment === 'production'
+  //     ? (process.env.MONGO_PROD_URL as string)
+  //     : (process.env.DB_LOCAl_URI as string);
+
+  const dbUri: string = process.env.MONGO_PROD_URL;
 
   mongoose
     .connect(dbUri, {
       dbName: process.env.DB_NAME as string,
     })
     .then((con) => {
-      if (environment.match('development')) {
-        console.log(
-          `Connected to MongoDB with Host: ${con.connection.host}:${con.connection.port}`
-        );
-      }
-      if (environment.match('production')) {
-        console.log('Connected to MongoDB in Production Environment !');
-      }
+      // if (environment.match('development')) {
+      //   console.log(
+      //     `Connected to MongoDB with Host: ${con.connection.host}:${con.connection.port}`
+      //   );
+      // }
+      // if (environment.match('production')) {
+      //   console.log('Connected to MongoDB in Production Environment !');
+      // }
+      console.log('Connected to MongoDB in Production Environment !');
     })
     .catch((error) => {
       console.log(error);
