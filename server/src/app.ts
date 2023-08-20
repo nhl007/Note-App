@@ -1,4 +1,4 @@
-import express, { Application, NextFunction, Request, Response } from 'express';
+import express, { Application, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import cors, { CorsOptions } from 'cors';
 import helmet from 'helmet';
