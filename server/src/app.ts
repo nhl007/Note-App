@@ -1,7 +1,7 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import cors, { CorsOptions } from 'cors';
-// import helmet from 'helmet';
+import helmet from 'helmet';
 
 import notesRouter from './routes/noteRoute';
 import authRouter from './routes/authRoute';
@@ -25,8 +25,9 @@ const corsOptions: CorsOptions = {
 
 app.use(cors(corsOptions));
 
-// app.disable('x-powered-by');
-// app.use(helmet());
+app.use(helmet());
+
+app.disable('x-powered-by');
 
 app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
@@ -41,6 +42,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/notes', notesRouter);
+
 app.use((req, res, next) => {
   res.status(404).send('No route found!');
 });

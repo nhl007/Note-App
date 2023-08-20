@@ -12,8 +12,11 @@
       "src": "/(.*)",
       "dest": "dist/server.js",
       "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://nhl007noteapp.netlify.app"
+        },
         { "key": "Access-Control-Allow-Credentials", "value": "true" },
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
         {
           "key": "Access-Control-Allow-Methods",
           "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT"
