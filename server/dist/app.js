@@ -12,9 +12,20 @@ const error_1 = require("./middleware/error");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const app = (0, express_1.default)();
 const whitelist = process.env.WHITELIST;
-app.use((0, cors_1.default)({
-    origin: '*',
-}));
+const corsOptions = {
+    credentials: true,
+    origin: (origin, callback) => {
+        // `!origin` allows server-to-server requests (ie, localhost requests)
+        if (!origin || whitelist.indexOf(origin) !== -1) {
+            callback(null, true);
+        }
+        else {
+            callback(new Error('Not allowed by CORS: ' + origin));
+        }
+    },
+    optionsSuccessStatus: 200,
+};
+app.use((0, cors_1.default)(corsOptions));
 // app.disable('x-powered-by');
 // app.use(helmet());
 app.use(express_1.default.json({ limit: '50mb' }));

@@ -11,12 +11,20 @@ import cookieParser from 'cookie-parser';
 const app: Application = express();
 
 const whitelist = process.env.WHITELIST as string;
+const corsOptions: CorsOptions = {
+  credentials: true,
+  origin: (origin, callback) => {
+    // `!origin` allows server-to-server requests (ie, localhost requests)
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS: ' + origin));
+    }
+  },
+  optionsSuccessStatus: 200,
+};
 
-app.use(
-  cors({
-    origin: '*',
-  })
-);
+app.use(cors(corsOptions));
 
 // app.disable('x-powered-by');
 // app.use(helmet());
