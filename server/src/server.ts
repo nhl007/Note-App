@@ -7,8 +7,9 @@ import connectToDatabase from './config/database';
 const host = 'http://localhost';
 const port = process.env.PORT || 5000;
 
+connectToDatabase();
+
 const server = app.listen(port, () => {
-  connectToDatabase();
   console.log(`\nServer listening on ${host}:${port}\n`);
 });
 

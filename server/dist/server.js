@@ -32,8 +32,8 @@ const app_1 = __importDefault(require("./app"));
 const database_1 = __importDefault(require("./config/database"));
 const host = 'http://localhost';
 const port = process.env.PORT || 5000;
+(0, database_1.default)();
 const server = app_1.default.listen(port, () => {
-    (0, database_1.default)();
     console.log(`\nServer listening on ${host}:${port}\n`);
 });
 process.on('unhandledRejection', (err) => {
