@@ -3,19 +3,17 @@ import { useEffect, useState } from 'react';
 import { baseUrl } from '../assets/constants';
 
 import { useParams } from 'react-router-dom';
-import TextEditor from './TextEditor';
-import Dropdown from './Dropdown';
+import TextEditor from '../components/TextEditor';
+import Dropdown from '../components/Dropdown';
 
 import { BiArrowBack } from 'react-icons/bi';
 
 import { useNavigate } from 'react-router-dom';
 import { useFeatureContext } from '../context/Feature/FeatureContext';
-import { Alert } from '.';
+import { Alert } from '../components';
 import { useAuthContext } from '../context/Auth/AuthContext';
 
 const UpdateNotes = () => {
-  document.title = 'Update Notes';
-
   const navigate = useNavigate();
 
   const {
@@ -63,6 +61,7 @@ const UpdateNotes = () => {
   };
 
   useEffect(() => {
+    document.title = 'Update Notes';
     setScreen('update');
     if (id && token) {
       getNoteInfo();

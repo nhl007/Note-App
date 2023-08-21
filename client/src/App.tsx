@@ -1,9 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
-
-import DashBoard from './DashBoard';
-import Authentication from './Authentication';
-import { CreateNote, UpdateNotes, NavBar } from './components';
-import Profile from './pages/Profile';
+import { NavBar } from './components';
+import {
+  DashBoard,
+  Authentication,
+  CreateNote,
+  UpdateNotes,
+  Profile,
+} from './pages';
 
 function App() {
   return (

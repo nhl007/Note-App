@@ -1,21 +1,29 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { baseUrl } from '../assets/constants';
-import TextEditor from './TextEditor';
-import Dropdown from './Dropdown';
+import TextEditor from '../components/TextEditor';
+import Dropdown from '../components/Dropdown';
 import { useFeatureContext } from '../context/Feature/FeatureContext';
-import { Alert } from '.';
+import { Alert } from '../components';
 import { useAuthContext } from '../context/Auth/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const CreateNote = () => {
-  document.title = 'Create Note';
   const navigate = useNavigate();
   const {
     state: { token },
   } = useAuthContext();
 
+  const {
+    state: { showAlert },
+    displayAlert,
+    setIsLoading,
+    setScreen,
+  } = useFeatureContext();
+
   useEffect(() => {
+    document.title = 'Create Note';
+    setScreen('create');
     if (!token) navigate('/');
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -27,12 +35,6 @@ const CreateNote = () => {
   const [files, setFiles] = useState<noteImages>([]);
 
   const [noteId, setNoteId] = useState(null);
-
-  const {
-    state: { showAlert },
-    displayAlert,
-    setIsLoading,
-  } = useFeatureContext();
 
   const axiosConfig = {
     withCredentials: true,

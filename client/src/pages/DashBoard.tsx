@@ -1,21 +1,26 @@
-import { useAuthContext } from './context/Auth/AuthContext';
-import { useFeatureContext } from './context/Feature/FeatureContext';
-import { Alert, ViewPrivateNotes, ViewPublicNotes } from './components';
+import { useAuthContext } from '../context/Auth/AuthContext';
+import { useFeatureContext } from '../context/Feature/FeatureContext';
+import { Alert, ViewPrivateNotes, ViewPublicNotes } from '../components';
 
 import { Link } from 'react-router-dom';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const DashBoard = () => {
-  document.title = 'Dashboard';
   const {
     state: { user },
   } = useAuthContext();
   const {
     state: { showAlert },
+    setScreen,
   } = useFeatureContext();
 
   const [isPrivate, setIsPrivate] = useState(true);
+
+  useEffect(() => {
+    document.title = 'Dashboard';
+    setScreen('home');
+  });
 
   return (
     <section className='flex flex-col justify-start items-start gap-2 sm:gap-6 w-full h-full'>

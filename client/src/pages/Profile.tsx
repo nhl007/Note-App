@@ -2,7 +2,7 @@ import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { Alert, Loading } from '../components';
 import { useAuthContext } from '../context/Auth/AuthContext';
 import { useFeatureContext } from '../context/Feature/FeatureContext';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { baseUrl } from '../assets/constants';
 import axios from 'axios';
 
@@ -17,7 +17,11 @@ const Profile = () => {
     update,
   } = useAuthContext();
 
-  document.title = user?.name ?? 'Profile';
+  useEffect(() => {
+    document.title = user?.name ?? 'Profile';
+
+    setScreen('profile');
+  }, []);
 
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
@@ -29,6 +33,7 @@ const Profile = () => {
 
   const {
     setIsLoading,
+    setScreen,
     state: { isLoading },
   } = useFeatureContext();
 
