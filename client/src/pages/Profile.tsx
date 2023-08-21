@@ -1,5 +1,5 @@
 import { AiOutlineCheckCircle } from 'react-icons/ai';
-import { Alert } from '../components';
+import { Alert, Loading } from '../components';
 import { useAuthContext } from '../context/Auth/AuthContext';
 import { useFeatureContext } from '../context/Feature/FeatureContext';
 import React, { useState } from 'react';
@@ -17,12 +17,20 @@ const Profile = () => {
     update,
   } = useAuthContext();
 
+  document.title = user?.name ?? 'Profile';
+
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
   const [description, setDescription] = useState(user?.description);
-  // const [image, setImage] = useState<imageObj | null>(null);
 
-  const [file, setFile] = useState<File | undefined>(undefined);
+  const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>(
+    null
+  );
+
+  const {
+    setIsLoading,
+    state: { isLoading },
+  } = useFeatureContext();
 
   const {
     state: { showAlert },
@@ -32,6 +40,7 @@ const Profile = () => {
     withCredentials: true,
   };
   const uploadImageToCloud = async (file: string) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(
         `${baseUrl}/notes/image`,
@@ -45,28 +54,35 @@ const Profile = () => {
       return imageData;
     } catch (error) {
       return null;
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const insertImageAndUpdate = async () => {
-    const fileReader = new FileReader();
+    const imageData = await uploadImageToCloud(previewImage as string);
+    const data = {
+      name: name as string,
+      email: email as string,
+      description: description,
+      image: imageData,
+    };
+    await update(data);
+  };
+
+  const setPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
+      const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
       fileReader.onloadend = async () => {
-        const imageData = await uploadImageToCloud(fileReader.result as string);
-        const data = {
-          name: name as string,
-          email: email as string,
-          description: description,
-          image: imageData,
-        };
-        await update(data);
+        setPreviewImage(() => fileReader.result);
       };
     }
   };
 
   const updateInfo = async () => {
-    if (file) {
+    if (previewImage) {
       await insertImageAndUpdate();
     } else {
       const data = {
@@ -81,22 +97,18 @@ const Profile = () => {
   return (
     <section className='flex flex-col justify-center items-center gap-4'>
       {showAlert && <Alert />}
+      {isLoading && <Loading />}
 
-      {user?.image?.url ? (
+      {user?.image?.url || previewImage ? (
         <img
           className='mt-4 self-center w-[150px] h-[150px] rounded-full flex justify-center items-center bg-teal-400 text-[48px] object-cover'
-          src={user.image.url}
+          src={(previewImage as string) ?? user?.image?.url}
         />
       ) : (
         <span className=''>{user?.name.charAt(0).toUpperCase()}</span>
       )}
 
-      <input
-        type='file'
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setFile(e.target.files?.[0])
-        }
-      />
+      <input type='file' onChange={setPreview} />
 
       <div className='w-full flex flex-col justify-end gap-2 '>
         <div className=' flex flex-col gap-1 max-w-xs'>
@@ -134,7 +146,7 @@ const Profile = () => {
 
         <button
           onClick={updateInfo}
-          className=' flex gap-2 justify-center items-center max-w-[150px]'
+          className=' flex gap-2 justify-center items-center max-w-[150px] border-teal-400 border-[1px] hover:border-red-300'
           type='submit'
         >
           Update

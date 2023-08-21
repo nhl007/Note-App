@@ -56,9 +56,10 @@ const axiosConfig: AxiosRequestConfig = {
 const AuthProvider = ({ children }: onlyChildrenProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const { displayAlert } = useFeatureContext();
+  const { displayAlert, setIsLoading } = useFeatureContext();
 
   const register = async (name: string, email: string, password: string) => {
+    setIsLoading(true);
     await axios
       .post(
         `${baseUrl}/auth/register`,
@@ -86,10 +87,14 @@ const AuthProvider = ({ children }: onlyChildrenProps) => {
       .catch((err) => {
         displayAlert(err.response.data.message, false);
         console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   const login = async (email: string, password: string) => {
+    setIsLoading(true);
     await axios
       .post(
         `${baseUrl}/auth/login`,
@@ -116,9 +121,13 @@ const AuthProvider = ({ children }: onlyChildrenProps) => {
       })
       .catch((err) => {
         displayAlert(err.response.data.message, false);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
   const logout = async () => {
+    setIsLoading(true);
     await axios
       .get(`${baseUrl}/auth/logout`, axiosConfig)
       .then(() => {
@@ -130,10 +139,14 @@ const AuthProvider = ({ children }: onlyChildrenProps) => {
       })
       .catch((err) => {
         displayAlert(err.response.data.message, false);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   const update = async (data: userInfoType) => {
+    setIsLoading(true);
     await axios
       .post(`${baseUrl}/auth/update`, data, axiosConfig)
       .then((res) => {
@@ -147,6 +160,9 @@ const AuthProvider = ({ children }: onlyChildrenProps) => {
       })
       .catch((err) => {
         displayAlert(err.response.data.message, false);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 

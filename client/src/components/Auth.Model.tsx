@@ -1,11 +1,11 @@
 import { FormEvent, useState } from 'react';
 import { useFeatureContext } from '../context/Feature/FeatureContext';
-import { Alert } from '.';
+import { Alert, Loading } from '.';
 import { useAuthContext } from '../context/Auth/AuthContext';
 
 const AuthModel = ({ type, setType }: AuthenticationProps) => {
   const {
-    state: { showAlert },
+    state: { showAlert, isLoading },
     displayAlert,
   } = useFeatureContext();
 
@@ -39,6 +39,7 @@ const AuthModel = ({ type, setType }: AuthenticationProps) => {
   return (
     <>
       {showAlert && <Alert />}
+      {isLoading && <Loading />}
       <div className=' flex justify-center items-center px-4'>
         <div className=' flex justify-center items-center flex-col '>
           <h1 className=' text-[28px] leading-[42px] text-teal-400 font-semibold'>

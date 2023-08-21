@@ -4,6 +4,8 @@ import { useAuthContext } from './context/Auth/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Authentication = () => {
+  document.title = 'Notes By Nihal';
+
   const [type, setType] = useState<AuthPropType>('login');
 
   const navigate = useNavigate();

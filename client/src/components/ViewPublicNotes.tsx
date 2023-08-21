@@ -8,13 +8,14 @@ import { NoteListView } from '.';
 const ViewPublicNotes = () => {
   const [notes, setNotes] = useState<NoteMetaData[]>([]);
 
-  const { displayAlert } = useFeatureContext();
+  const { displayAlert, setIsLoading } = useFeatureContext();
 
   const axiosConfig = {
     withCredentials: true,
   };
 
   const loadNotes = async () => {
+    setIsLoading(true);
     await axios
       .get(`${baseUrl}/notes/all`, axiosConfig)
       .then((response) => {
@@ -25,6 +26,9 @@ const ViewPublicNotes = () => {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
   useEffect(() => {

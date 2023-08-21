@@ -7,13 +7,14 @@ import { NoteListView } from '.';
 const ViewPrivateNotes = () => {
   const [notes, setNotes] = useState<NoteMetaData[]>([]);
 
-  const { displayAlert } = useFeatureContext();
+  const { displayAlert, setIsLoading } = useFeatureContext();
 
   const axiosConfig = {
     withCredentials: true,
   };
 
   const loadNotes = async () => {
+    setIsLoading(true);
     await axios
       .get(`${baseUrl}/notes`, axiosConfig)
       .then((response) => {
@@ -24,10 +25,14 @@ const ViewPrivateNotes = () => {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   const deleteNotes = async (id: string) => {
+    setIsLoading(true);
     await axios
       .delete(`${baseUrl}/notes/${id}`, axiosConfig)
       .then(() => {
@@ -36,6 +41,9 @@ const ViewPrivateNotes = () => {
       })
       .catch(() => {
         displayAlert('Error Occurred! Try again', true);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 

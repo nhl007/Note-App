@@ -31,6 +31,7 @@ const CreateNote = () => {
   const {
     state: { showAlert },
     displayAlert,
+    setIsLoading,
   } = useFeatureContext();
 
   const axiosConfig = {
@@ -44,6 +45,9 @@ const CreateNote = () => {
         false
       );
     }
+
+    setIsLoading(true);
+
     await axios
       .post(
         `${baseUrl}/notes`,
@@ -62,6 +66,9 @@ const CreateNote = () => {
       })
       .catch((err) => {
         displayAlert(err.response.data.message, false);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -88,7 +95,12 @@ const CreateNote = () => {
       </div>
 
       <TextEditor files={files} setFiles={setFiles} setContent={setContent} />
-      <button onClick={onSubmit}>Create</button>
+      <button
+        className='flex  justify-center items-center max-w-[150px] border-teal-400 border-[1px] hover:border-red-300'
+        onClick={onSubmit}
+      >
+        Create
+      </button>
     </section>
   );
 };

@@ -17,11 +17,14 @@ type navProps = {
 
 //? Feature context types
 
+type screens = 'home' | 'create' | 'profile' | 'auth' | 'update';
+
 type initialFeatureContextStateType = {
   showAlert: boolean;
   alertText: string;
   alertSuccess: boolean;
   isLoading: boolean;
+  screen: screens;
 };
 
 type featureContextActionsType = {
@@ -30,6 +33,7 @@ type featureContextActionsType = {
     type?: boolean;
     text?: string;
     isLoading?: boolean;
+    screen?: screens;
   };
 };
 

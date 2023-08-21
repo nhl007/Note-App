@@ -7,6 +7,7 @@ import ViewPrivateNotes from './ViewPrivateNotes';
 import ViewPublicNotes from './ViewPublicNotes';
 import Alert from './Alert';
 import NoteListView from './NoteListView';
+import Loading from './Loading';
 
 export {
   AuthModel,
@@ -18,4 +19,5 @@ export {
   UpdateNotes,
   Alert,
   NoteListView,
+  Loading,
 };

@@ -1,4 +1,9 @@
-import { DISPLAY_ALERT, CLEAR_ALERT, SET_IS_LOADING } from '../actions.ts';
+import {
+  DISPLAY_ALERT,
+  CLEAR_ALERT,
+  SET_IS_LOADING,
+  SCREEN_SETTING,
+} from '../actions.ts';
 
 const reducer = (
   state: initialFeatureContextStateType,
@@ -23,10 +28,15 @@ const reducer = (
   if (action.type === SET_IS_LOADING) {
     return {
       ...state,
-      isLoading: action.payload?.type as boolean,
+      isLoading: action.payload?.isLoading as boolean,
     };
   }
-
+  if (action.type === SCREEN_SETTING) {
+    return {
+      ...state,
+      screen: action.payload?.screen as screens,
+    };
+  }
   throw new Error(`no such action :${action.type}`);
 };
 

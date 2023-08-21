@@ -22,6 +22,7 @@ import { BsCode } from 'react-icons/bs';
 import axios from 'axios';
 import { baseUrl } from '../assets/constants';
 import { rgbToHex } from '../utils/rgbToHex';
+import { useFeatureContext } from '../context/Feature/FeatureContext';
 
 type Props = {
   html?: string;
@@ -46,6 +47,12 @@ type tagButtons = {
 };
 
 function TextEditor({ html, setContent, setFiles, files }: Props) {
+  const {
+    setIsLoading,
+    displayAlert,
+    state: { isLoading },
+  } = useFeatureContext();
+
   const textArea = useRef<HTMLDivElement>(null!);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
@@ -93,6 +100,7 @@ function TextEditor({ html, setContent, setFiles, files }: Props) {
   };
 
   const uploadToCloud = async (file: string) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(
         `${baseUrl}/notes/image`,
@@ -105,7 +113,10 @@ function TextEditor({ html, setContent, setFiles, files }: Props) {
       // console.log(response.data.data);
       return imageData;
     } catch (error) {
+      displayAlert('Server Error! Try Again', false);
       return null;
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -241,6 +252,11 @@ function TextEditor({ html, setContent, setFiles, files }: Props) {
 
   return (
     <div className='w-full flex flex-col gap-4'>
+      {isLoading && (
+        <div className=' flex justify-center items-center absolute inset-0 w-screen h-screen bg-transparent'>
+          <img src='/loader.svg' width={60} height={60} alt='loader' />
+        </div>
+      )}
       <div className='flex gap-2 justify-center items-center flex-wrap'>
         <button
           title='Bold'

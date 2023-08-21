@@ -21,6 +21,8 @@ const UpdateNotes = () => {
   const {
     state: { showAlert },
     displayAlert,
+    setIsLoading,
+    setScreen,
   } = useFeatureContext();
 
   const {
@@ -41,6 +43,7 @@ const UpdateNotes = () => {
   };
 
   const getNoteInfo = async () => {
+    setIsLoading(true);
     await axios
       .get(`${baseUrl}/notes/${id}`, axiosConfig)
       .then((response) => {
@@ -53,10 +56,14 @@ const UpdateNotes = () => {
       .catch((err) => {
         displayAlert(err.response.data.message, false);
         navigate('/');
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   useEffect(() => {
+    setScreen('update');
     if (id && token) {
       getNoteInfo();
     } else navigate('/');
@@ -69,6 +76,7 @@ const UpdateNotes = () => {
   }
 
   const onSubmit = async () => {
+    setIsLoading(true);
     await axios
       .patch(
         `${baseUrl}/notes/${id}`,
@@ -85,6 +93,9 @@ const UpdateNotes = () => {
       })
       .catch((err) => {
         displayAlert(err.response.data.message, false);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -92,7 +103,13 @@ const UpdateNotes = () => {
     <section className='flex w-full flex-col justify-start items-start gap-4 sm:gap-6'>
       {showAlert && <Alert />}
       <div className=' flex gap-2 items-center text-teal-400'>
-        <button onClick={() => navigate('/')} className=' mt-0 sm:mt-4'>
+        <button
+          onClick={() => {
+            setScreen('home');
+            navigate('/');
+          }}
+          className=' mt-0 sm:mt-4'
+        >
           <BiArrowBack />
         </button>
         <h1>Update Note :</h1>
@@ -115,7 +132,12 @@ const UpdateNotes = () => {
         setFiles={setFiles}
         setContent={setContent}
       />
-      <button onClick={onSubmit}>Save</button>
+      <button
+        className='flex justify-center items-center max-w-[150px] border-teal-400 border-[1px] hover:border-red-300'
+        onClick={onSubmit}
+      >
+        Save
+      </button>
     </section>
   );
 };
