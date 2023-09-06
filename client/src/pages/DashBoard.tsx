@@ -20,6 +20,7 @@ const DashBoard = () => {
   useEffect(() => {
     document.title = 'Dashboard';
     setScreen('home');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
