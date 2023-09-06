@@ -27,6 +27,8 @@ const sendToken = (
 
   res.cookie('token', token, cookieOptions);
 
+  user.set('password', undefined);
+
   return res.status(statusCode).json({
     success: true,
     token,
