@@ -20,7 +20,7 @@ const DashBoard = () => {
   useEffect(() => {
     document.title = 'Dashboard';
     setScreen('home');
-  });
+  }, []);
 
   return (
     <section className='flex flex-col justify-start items-start gap-2 sm:gap-6 w-full h-full'>
