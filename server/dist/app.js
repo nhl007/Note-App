@@ -12,6 +12,7 @@ const authRoute_1 = __importDefault(require("./routes/authRoute"));
 const error_1 = require("./middleware/error");
 const app = (0, express_1.default)();
 const whitelist = process.env.WHITELIST.split(',');
+console.log(whitelist);
 const corsOptions = {
     credentials: true,
     origin: (origin, callback) => {

@@ -40,7 +40,7 @@ exports.signInUser = (0, catchAsyncErrors_1.default)((req, res, next) => __await
     if (!user) {
         return next(new errorHandler_1.default('Please input correct password', 401));
     }
-    const isUser = user.comparePassword(password);
+    const isUser = yield user.comparePassword(password);
     if (!isUser) {
         return next(new errorHandler_1.default('Please input correct password', 401));
     }

@@ -4,7 +4,7 @@ const sendToken = (user, res, statusCode) => {
     const token = user.getJwtToken();
     const sevenDay = 7 * 1000 * 60 * 60 * 24;
     let cookieOptions = {
-        httpOnly: true,
+        httpOnly: false,
         maxAge: sevenDay,
         sameSite: 'strict',
     };
